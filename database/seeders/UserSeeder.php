@@ -28,6 +28,39 @@ class UserSeeder extends Seeder
                 'updated_at' => Carbon::now(),
                 'id_role' => '2'
             ],
+
+            [
+                'name' => 'lekhanh', 
+                'email' => 'khanh@gmail.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => 'ABC12345',
+                'remember_token' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'id_role' => '1'
+            ],
+
+            [
+                'name' => 'tranvan', 
+                'email' => 'van@gmail.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => 'ABC12345',
+                'remember_token' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'id_role' => '2'
+            ],
+
+            [
+                'name' => 'letuananh', 
+                'email' => 'tuananh@gmail.com',
+                'email_verified_at' => Carbon::now(),
+                'password' => 'ABC12345',
+                'remember_token' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+                'id_role' => '2'
+            ],
         ]);
     }
 }

@@ -26,6 +26,26 @@ class ProductDetailSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+
+            [
+                'id_product' => '3',
+                'size' => '38',
+                'color' => 'Black',
+                'avt' => 'https://i.pinimg.com/564x/3e/c5/ee/3ec5ee3316e052efa6365df3c90779f5.jpg',
+                'inventory_number' => '5',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            [
+                'id_product' => '4',
+                'size' => '37',
+                'color' => 'Blue',
+                'avt' => 'https://i.pinimg.com/564x/32/2d/70/322d70635f64e7d376c3f73241ea1c6e.jpg',
+                'inventory_number' => '5',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }

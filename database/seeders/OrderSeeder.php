@@ -22,6 +22,20 @@ class OrderSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            
+            [
+                'id_user' => '3',
+                'time_create'=>'$userOrderTime',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+
+            [
+                'id_user' => '1',
+                'time_create'=>'$userOrderTime',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }
