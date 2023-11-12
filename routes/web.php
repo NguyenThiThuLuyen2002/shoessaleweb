@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin');
     Route::get('dashboard', [DashboardController::class, 'index']);
-});
 
+    // Category
+    Route::prefix('categories')->group(function () {
+        Route::get('add', [CategoryController::class, 'create']);
+        Route::post('add', [CategoryController::class, 'store']);
+    });
+});
