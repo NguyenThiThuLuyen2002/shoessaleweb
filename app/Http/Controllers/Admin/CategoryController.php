@@ -17,13 +17,6 @@ class CategoryController extends Controller
         $this->category = $category;
     }
 
-    public function create()
-    {
-        return view('admin.categories.add', [
-            'title' => 'Thêm danh mục'
-        ]);
-    }
-
     public function store(CreateCategoryRequest $request)
     {
         try {
@@ -39,4 +32,14 @@ class CategoryController extends Controller
     
         return redirect()->back();
     }
+
+    public function index()
+    {
+        $categories = $this->category->oldest('id')->paginate(4);
+        return view('admin.categories.index', compact('categories'),  [
+            'title' => 'Danh sách danh mục'
+        ]);
+    }
+
+   
 }

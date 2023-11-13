@@ -17,12 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 // admin
 Route::prefix('admin')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('admin');
-    Route::get('dashboard', [DashboardController::class, 'index']);
+    Route::get('', [DashboardController::class, 'index']);
 
     // Category
     Route::prefix('categories')->group(function () {
-        Route::get('add', [CategoryController::class, 'create']);
-        Route::post('add', [CategoryController::class, 'store']);
+        Route::post('list', [CategoryController::class, 'store']);
+        Route::get('list', [CategoryController::class, 'index']);
     });
 });
