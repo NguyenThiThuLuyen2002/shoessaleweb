@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,5 +24,11 @@ Route::prefix('admin')->group(function () {
     Route::prefix('categories')->group(function () {
         Route::post('list', [CategoryController::class, 'store']);
         Route::get('list', [CategoryController::class, 'index']);
+    });
+
+    // Product
+    Route::prefix('products')->group(function () {
+        Route::get('list', [ProductController::class, 'index']);
+        Route::get('detail/{id}', [ProductController::class, 'show']);
     });
 });
