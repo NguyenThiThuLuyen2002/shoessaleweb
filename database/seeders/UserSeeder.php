@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,11 +16,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         DB::table('users')->insert([
             [
-                'name' => 'nguyenthanhminh', 
+                'name' => 'nguyenthanhminh',
                 'email' => 'minh@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' => 'ABC12345',
@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'lekhanh', 
+                'name' => 'lekhanh',
                 'email' => 'khanh@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' => 'ABC12345',
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'tranvan', 
+                'name' => 'tranvan',
                 'email' => 'van@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' => 'ABC12345',
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'letuananh', 
+                'name' => 'letuananh',
                 'email' => 'tuananh@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' => 'ABC12345',
