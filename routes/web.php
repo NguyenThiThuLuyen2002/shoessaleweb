@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function() {
     return view('client/home');
 });
+
 Route::get('/loginform',function(){
     return view('auth.login');
 })->name('login');
+
+// admin
+Route::prefix('admin')->group(function () {
+    Route::get('', [DashboardController::class, 'index']);
+
+    // Category
+    Route::prefix('categories')->group(function () {
+        Route::post('list', [CategoryController::class, 'store']);
+        Route::get('list', [CategoryController::class, 'index']);
+    });
+});

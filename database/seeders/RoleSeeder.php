@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -14,16 +15,15 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         DB::table('roles')->insert([
             [
-                'name_role' => 'admin', 
+                'name_role' => 'admin',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ],
             [
-                'name_role' => 'client', 
+                'name_role' => 'client',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]

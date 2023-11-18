@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,7 +14,6 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
 
         DB::table('categories')->insert([
             [
