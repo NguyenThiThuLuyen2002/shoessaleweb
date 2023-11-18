@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function () {
 
     // Product
     Route::prefix('products')->group(function () {
+        Route::get('create', [ProductController::class, 'create']);
         Route::get('list', [ProductController::class, 'index']);
         Route::get('detail/{id}', [ProductController::class, 'show']);
     });

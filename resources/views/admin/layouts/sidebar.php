@@ -56,7 +56,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="/admin/products/create" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Thêm Sản Phẩm</p>
                             </a>

@@ -34,7 +34,11 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = $this->category->get(['id', 'name_category']);
+
+        return view('admin.products.create', compact('categories'),  [
+            'title' => 'Thêm sản phẩm'
+        ]);
     }
 
     /**
