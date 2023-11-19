@@ -15,14 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function() {
-    return view('client/home');
-});
-
-Route::get('/loginform',function(){
-    return view('auth.login');
-})->name('login');
-
 // admin
 Route::prefix('admin')->group(function () {
     Route::get('', [DashboardController::class, 'index']);
