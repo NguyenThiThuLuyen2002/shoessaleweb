@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+//home
+Route::get('/', function () {
+    return view('welcome')->name('home');
+});
 
 // admin
 Route::prefix('admin')->group(function () {
@@ -25,3 +31,8 @@ Route::prefix('admin')->group(function () {
         Route::get('list', [CategoryController::class, 'index']);
     });
 });
+
+// login
+
+Route::get('form-login', [AuthController::class, 'formLogin'])->name('form_login');
+Route::post('login', [AuthController::class, 'login'])->name('login');

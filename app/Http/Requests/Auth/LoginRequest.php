@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Category;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCategoryRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,8 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_category' => 'required|unique:categories,name_category'
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'name_category.required' => 'Tên danh mục không được để trống!',
-            'name_category.unique' => 'Tên danh mục đã có!',
+            'email' => ['required'],
+            'password' => ['required'],
         ];
     }
 }
