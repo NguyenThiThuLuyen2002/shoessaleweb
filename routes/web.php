@@ -18,12 +18,13 @@ use App\Http\Controllers\AuthController;
 */
 //home
 Route::get('/', function () {
-    return view('welcome')->name('home');
+    return view('home/homepage');
 });
+
 
 // admin
 Route::prefix('admin')->group(function () {
-    Route::get('', [DashboardController::class, 'index']);
+    Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
 
     // Category
     Route::prefix('categories')->group(function () {
@@ -36,3 +37,8 @@ Route::prefix('admin')->group(function () {
 
 Route::get('form-login', [AuthController::class, 'formLogin'])->name('form_login');
 Route::post('login', [AuthController::class, 'login'])->name('login');
+
+//login decentralization
+Route::get('/client-home-page',[AuthController::class,'dashboard_client'])->name('client_page');
+
+
