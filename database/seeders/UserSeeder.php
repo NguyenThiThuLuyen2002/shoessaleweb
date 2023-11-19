@@ -19,10 +19,10 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name' => 'nguyenthanhminh',
-                'email' => 'minh@gmail.com',
+                'name' => 'Hong',
+                'email' => 'hong@gmail.com',
                 'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'password' => bcrypt('123456'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -30,10 +30,10 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'lekhanh',
-                'email' => 'khanh@gmail.com',
+                'name' => 'Thao',
+                'email' => 'thao@gmail.com',
                 'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'password' => bcrypt('123456'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
@@ -41,26 +41,15 @@ class UserSeeder extends Seeder
             ],
 
             [
-                'name' => 'tranvan',
-                'email' => 'van@gmail.com',
+                'name' => 'Thu',
+                'email' => 'thu@gmail.com',
                 'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'password' => bcrypt('123456'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'id_role' => '2'
-            ],
-
-            [
-                'name' => 'letuananh',
-                'email' => 'tuananh@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
-                'remember_token' => '',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'id_role' => '2'
-            ],
+            ]
         ]);
     }
 }
