@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\CreateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -44,10 +47,73 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request)
     {
-        //
+        try {
+            //dd($request->all());
+            $file_name = null; // Initialize $file_name as null
+
+            if ($request->has('image_upload')) {
+                $file = $request->image_upload;
+                $file_name = $file->getClientOriginalName();
+                $file->move(public_path('upload/products'), $file_name);
+            }
+            $request->merge(['avt' => $file_name]);
+
+            $product = Product::create([
+                'id_category' => $request->input('id_category'),
+                'name_product' => $request->input('name_product'),
+                'price' => $request->input('price'),
+                'description' => $request->input('description'),
+                'avt' => $request->input('avt')
+            ]);
+            $id_product = $product->id;
+            $file_name_detail = 'default123.jpg';
+            if ($request->has('details')) {
+                $details = $request->input('details', []);
+                foreach ($details as $index => $detail) {
+                    // Kiểm tra xem trường 'image_detail_upload123' có tồn tại trong mảng $detail không
+                    if (isset($detail['image_detail_upload123'])) {
+                        // Lấy thông tin từ đối tượng UploadedFile
+                        $file_detail = $detail['image_detail_upload123'];
+
+                        // Kiểm tra xem file đã được chọn chưa
+                        if ($file_detail) {
+                            // Lấy tên file gốc
+                            $file_name_detail = $file_detail->getClientOriginalName();
+
+                            // Di chuyển file đến thư mục đích
+                            $file_detail->move(public_path('upload/products'), $file_name_detail);
+                        }
+                    } else {
+                    }
+                    // Lưu thông tin chi tiết vào bảng `product_details`
+                    $productDetail = ProductDetail::create([
+                        'id_product' => $id_product,
+                        'size' => $detail['size'],
+                        'color' => $detail['color'],
+                        'avt_detail' => $file_name_detail ?? 'default.jpg',
+                        'inventory_number' => $detail['inventory_number'],
+                    ]);
+
+                    // Set the product relationship
+                    $productDetail->product()->associate($product);
+                    $productDetail->save(); // Save the product detail record
+
+                }
+            }
+
+            Session::flash('success', 'Thêm Sản phẩm thành công');
+        } catch (\Exception $err) {
+            Session::flash('error', 'Thêm Sản phẩm lỗi');
+            \Log::error($err->getMessage());
+            dd($err->getMessage());
+            return redirect()->back()->withInput();
+        }
+
+        return redirect()->back();
     }
+
 
     /**
      * Display the specified resource.

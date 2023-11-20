@@ -14,7 +14,7 @@
     </tr>
     @foreach ($product->details as $detail)
     <tr>
-        <td><img src="{{ $detail->avt }}" width="100px" height="100px" alt=""></td>
+        <td><img src="/upload/products/details/{{ $detail->avt_detail }}" width="100px" height="100px" alt=""></td>
         <td>{{ $detail->size }}</td>
         <td>{{ $detail->color }}</td>
         <td>{{ $detail->inventory_number }}

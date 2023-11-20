@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_product');
             $table->string('size');
             $table->string('color');
-            $table->text('avt');
+            $table->text('avt_detail');
             $table->integer('inventory_number');
             $table->timestamps();
 

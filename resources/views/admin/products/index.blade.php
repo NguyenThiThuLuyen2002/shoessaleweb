@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 @section('title', 'Danh sách sản phẩm')
 @section('content')
+<a href="/admin/products/create" class="btn btn-success mb-3">Thêm sản phẩm</a>
 <table class="table table-hover">
     <tr>
         <th>ID</th>
@@ -14,7 +15,7 @@
     @foreach ($products as $product)
     <tr>
         <td>{{ $product->id }}</td>
-        <td><img src="{{ $product->avt }}" width="120px" height="120px" alt=""></td>
+        <td><img src="/upload/products/{{ $product->avt }}" width="120px" height="120px" alt=""></td>
         <td>{{ $product->category->name_category }}</td>
         <td>{{ $product->name_product }}</td>
         <td>{{ number_format($product->price, 0, '.', '.') }} VND</td>

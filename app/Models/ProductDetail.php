@@ -13,12 +13,12 @@ class ProductDetail extends Model
         'id_product',
         'size',
         'color',
-        'avt',
+        'avt_detail',
         'inventory_number'
     ];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'id_product');
+        return $this->belongsTo(Product::class, 'id_product', 'id');
     }
 }
