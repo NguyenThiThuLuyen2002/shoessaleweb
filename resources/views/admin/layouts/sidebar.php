@@ -93,8 +93,12 @@
                                 <p>Danh Sách Đơn Hàng</p>
                             </a>
                         </li>
-
                     </ul>
+              
+
+                </li>
+                <li>
+                    <a href="{{ route('logout') }}">Logout</a>
                 </li>
             </ul>
         </nav>

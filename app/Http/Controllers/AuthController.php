@@ -14,31 +14,12 @@ class AuthController extends Controller
         return view('user/login');
     }
 
-    // public function login(LoginRequest $request)
-    // {
-    //     if (Auth::attempt($request->validated())) {
-    //         $request->session()->regenerate();
-
-    //         return view('home.homepage');
-    //     }
-
-    //     return redirect()->back()->with([
-    //         'fail' => 'Login fail'
-    //     ]);
-    // }
-
-
-
     public function login(LoginRequest $request)
     {
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
-
-            // Lấy thông tin người dùng đã đăng nhập
-            $user = Auth::user();
-
-            // Kiểm tra giá trị của trường id_role
-            switch ($user->id_role) {
+            $user = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
+            switch ($user->id_role) { // Kiểm tra giá trị của trường id_role
                 case 1:
                     // Nếu id_role là 1, chuyển hướng đến trang admin
                     return redirect()->route('admin-home-page');
@@ -48,12 +29,6 @@ class AuthController extends Controller
                     // Nếu id_role là 2, chuyển hướng đến trang client
                     return redirect()->route('client_page');
                     break;
-
-                    // Nếu id_role không phải 1 hoặc 2, bạn có thể xử lý theo cách khác tùy thuộc vào yêu cầu của bạn.
-
-                // default:
-                //     // Mặc định, chuyển hướng đến trang homepage
-                //     return redirect()->route('home.homepage');
             }
         }
 
@@ -62,13 +37,16 @@ class AuthController extends Controller
         ]);
     }
 
-
+    //
     public function dashboard_client()
     {
         return view('client.index'); // Thay đổi view tương ứng
     }
 
-   
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('form_login');
+    }
 }
-
-

@@ -40,5 +40,9 @@ Route::post('login', [AuthController::class, 'login'])->name('login');
 
 //login decentralization
 Route::get('/client-home-page',[AuthController::class,'dashboard_client'])->name('client_page');
+//logout
+Route::group(['middleware' => 'login'], function() {
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 

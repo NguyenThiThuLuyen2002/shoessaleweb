@@ -21,6 +21,8 @@ class Login
             return $next($request);
         }
 
+        // // Lưu trạng thái trang hiện tại vào session
+        // session(['previous_url' => url()->current()]);
         return redirect()->route('form_login');
     }
 }
