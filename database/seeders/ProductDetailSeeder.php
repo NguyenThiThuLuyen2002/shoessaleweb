@@ -34,7 +34,7 @@ class ProductDetailSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'id_product' => '3',
+                'id_product' => '2',
                 'size' => '38',
                 'color' => 'Black',
                 'avt_detail' => 'Roger Vivier Black.jpg',
@@ -44,7 +44,7 @@ class ProductDetailSeeder extends Seeder
             ],
 
             [
-                'id_product' => '4',
+                'id_product' => '3',
                 'size' => '37',
                 'color' => 'Blue',
                 'avt_detail' => 'Purple Sandal Blue.jpg',

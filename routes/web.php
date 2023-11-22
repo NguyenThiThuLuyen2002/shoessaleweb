@@ -32,6 +32,8 @@ Route::prefix('admin')->group(function () {
         Route::post('create', [ProductController::class, 'store']);
         Route::get('list', [ProductController::class, 'index']);
         Route::get('detail/{id}', [ProductController::class, 'show']);
+        Route::get('update/{id}', [ProductController::class, 'edit']);
+        Route::post('update/{id}', [ProductController::class, 'update']);
         
     });
 });

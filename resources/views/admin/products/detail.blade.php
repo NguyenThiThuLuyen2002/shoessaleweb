@@ -19,7 +19,6 @@
         <td>{{ $detail->color }}</td>
         <td>{{ $detail->inventory_number }}
         <td>
-            <a href="" class="btn btn-warning">Edit</a>
             <button class="btn btn-delete btn-danger">Delete</button>
         </td>
     </tr>

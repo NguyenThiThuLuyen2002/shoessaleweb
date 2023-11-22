@@ -25,24 +25,24 @@ $(document).ready(function () {
     });
 
     $("#add-new-detail").on("click", function() {
-        if (isFormValid()) {
+        // if (isFormValid()) {
             addNewRow();
-        } else {
-            alert("Vui lòng điền đầy đủ thông tin");
-        }
+        // } else {
+        //     alert("Vui lòng điền đầy đủ thông tin");
+        // }
     });
 
-    function isFormValid() {
-        // Kiểm tra xem tất cả các ô input có giá trị không
-        var isValid = true;
-        $("#detail-container .row:first input").each(function() {
-            if ($(this).val() === '') {
-                isValid = false;
-                return false; // Thoát khỏi vòng lặp nếu có ô input không có giá trị
-            }
-        });
-        return isValid;
-    }
+    // function isFormValid() {
+    //     // Kiểm tra xem tất cả các ô input có giá trị không
+    //     var isValid = true;
+    //     $("#detail-container .row:first input").each(function() {
+    //         if ($(this).val() === '') {
+    //             isValid = false;
+    //             return false; // Thoát khỏi vòng lặp nếu có ô input không có giá trị
+    //         }
+    //     });
+    //     return isValid;
+    // }
 
     function addNewRow() {
         // Sao chép hàng đầu tiên
