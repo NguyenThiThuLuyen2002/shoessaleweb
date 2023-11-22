@@ -52,8 +52,12 @@ $(document).ready(function () {
         // Tăng chỉ mục của chi tiết sản phẩm trong tên ô input
         newRow.find('input').each(function() {
             var name = $(this).attr('name');
-            name = name.replace(/\[(\d+)\]/, '[' + (lastRowIndex + 1) + ']');
-            $(this).attr('name', name);
+            var matches = name.match(/\[(\d+)\]/);
+            if (matches) {
+                var newIndex = parseInt(matches[1]) + 1;
+                name = name.replace(/\[(\d+)\]/, '[' + newIndex + ']');
+                $(this).attr('name', name);
+            }
         });
         
         // Xóa giá trị của các ô input trong hàng mới

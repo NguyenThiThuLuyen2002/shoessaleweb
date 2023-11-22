@@ -51,14 +51,15 @@ class ProductController extends Controller
     public function store(CreateProductRequest $request)
     {
         try {
-            //dd($request->all());
-            $file_name = null; // Initialize $file_name as null
+            // dd($request->all());
+            $file_name = null;
 
-            if ($request->has('image_upload')) {
-                $file = $request->image_upload;
+            if ($request->hasFile('image_upload')) {
+                $file = $request->file('image_upload');
                 $file_name = $file->getClientOriginalName();
                 $file->move(public_path('upload/products'), $file_name);
             }
+
             $request->merge(['avt' => $file_name]);
 
             $product = Product::create([
@@ -68,27 +69,21 @@ class ProductController extends Controller
                 'description' => $request->input('description'),
                 'avt' => $request->input('avt')
             ]);
+
             $id_product = $product->id;
-            $file_name_detail = 'default123.jpg';
+
             if ($request->has('details')) {
                 $details = $request->input('details', []);
+                //dd($details);
                 foreach ($details as $index => $detail) {
-                    // Kiểm tra xem trường 'image_detail_upload123' có tồn tại trong mảng $detail không
-                    if (isset($detail['image_detail_upload123'])) {
-                        // Lấy thông tin từ đối tượng UploadedFile
-                        $file_detail = $detail['image_detail_upload123'];
-
-                        // Kiểm tra xem file đã được chọn chưa
-                        if ($file_detail) {
-                            // Lấy tên file gốc
-                            $file_name_detail = $file_detail->getClientOriginalName();
-
-                            // Di chuyển file đến thư mục đích
-                            $file_detail->move(public_path('upload/products'), $file_name_detail);
-                        }
+                    $file_detail = $request->file('details.' . $index . '.image_detail_upload123');
+                    if ($file_detail) {
+                        $file_name_detail = $file_detail->getClientOriginalName();
+                        $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
+                        $file_name_detail = 'default123.jpg';
                     }
-                    // Lưu thông tin chi tiết vào bảng `product_details`
+
                     $productDetail = ProductDetail::create([
                         'id_product' => $id_product,
                         'size' => $detail['size'],
@@ -96,11 +91,9 @@ class ProductController extends Controller
                         'avt_detail' => $file_name_detail ?? 'default.jpg',
                         'inventory_number' => $detail['inventory_number'],
                     ]);
-
-                    // Set the product relationship
+                    //dd($file_name_detail);
                     $productDetail->product()->associate($product);
-                    $productDetail->save(); // Save the product detail record
-
+                    $productDetail->save();
                 }
             }
 
@@ -148,24 +141,24 @@ class ProductController extends Controller
         try {
             // Lấy thông tin sản phẩm cần cập nhật
             $product = Product::findOrFail($id);
-    
+
             // Xử lý upload ảnh
             if ($request->has('image_upload')) {
                 $file = $request->image_upload;
                 $file_name = $file->getClientOriginalName();
                 $file->move(public_path('upload/products'), $file_name);
-    
+
                 // Cập nhật tên ảnh mới cho sản phẩm
                 $product->avt = $file_name;
             }
-    
+
             // Cập nhật thông tin sản phẩm
             $product->id_category = $request->input('id_category');
             $product->name_product = $request->input('name_product');
             $product->price = $request->input('price');
             $product->description = $request->input('description');
             $product->save();
-    
+
             // Cập nhật thông tin chi tiết sản phẩm
             if ($request->has('details')) {
                 $details = $request->input('details', []);
@@ -174,12 +167,12 @@ class ProductController extends Controller
                     if (isset($detail['image_detail_upload123'])) {
                         // Lấy thông tin từ đối tượng UploadedFile
                         $file_detail = $detail['image_detail_upload123'];
-    
+
                         // Kiểm tra xem file đã được chọn chưa
                         if ($file_detail) {
                             // Lấy tên file gốc
                             $file_name_detail = $file_detail->getClientOriginalName();
-    
+
                             // Di chuyển file đến thư mục đích
                             $file_detail->move(public_path('upload/products'), $file_name_detail);
                         } else {
@@ -188,7 +181,7 @@ class ProductController extends Controller
                     } else {
                         $file_name_detail = 'default123.jpg';
                     }
-    
+
                     // Lấy hoặc tạo thông tin chi tiết sản phẩm
                     $productDetail = ProductDetail::updateOrCreate(
                         ['id_product' => $id, 'size' => $detail['size']],
@@ -200,7 +193,7 @@ class ProductController extends Controller
                     );
                 }
             }
-    
+
             Session::flash('success', 'Cập nhật Sản phẩm thành công');
         } catch (\Exception $err) {
             Session::flash('error', 'Cập nhật Sản phẩm lỗi');
@@ -208,7 +201,7 @@ class ProductController extends Controller
             dd($err->getMessage());
             return redirect()->back()->withInput();
         }
-    
+
         return redirect()->back();
     }
 
