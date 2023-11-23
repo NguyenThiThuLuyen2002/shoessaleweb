@@ -30,7 +30,7 @@
 
         <div class="form-group">
             <label>Hình ảnh</label>
-            <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control" value="/upload/products/{{ $product->avt }}">
+            <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control" value="{{ $product->avt }}">
             <img src="/upload/products/{{ $product->avt }}" id="show-image" alt="" width="150px">
         </div>
         <div class="form-group">
@@ -83,4 +83,23 @@
 </form>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/template/admin/js/product.js"></script>
+<script>
+    // Sự kiện khi trang tải
+    document.addEventListener('DOMContentLoaded', function() {
+        // Thiết lập giá trị mặc định cho input file
+        var imageDetailInput = document.getElementById('image-detail-input');
+        var avtDetailInput = document.getElementById('avt-detail');
+        
+        imageDetailInput.addEventListener('change', function() {
+            // Nếu người dùng đã chọn ảnh mới, không cần thiết lập giá trị mặc định
+            if (this.files.length > 0) {
+                avtDetailInput.value = '';
+            } else {
+                // Nếu người dùng không chọn ảnh mới, sử dụng giá trị avt của sản phẩm chính
+                this.value = ''; // Xóa giá trị để trigger sự kiện change khi thiết lập giá trị
+                avtDetailInput.value = "{{ $product->avt }}";
+            }
+        });
+    });
+</script>
 @endsection
