@@ -21,7 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'created_at',
+        'updated_at',
+            
     ];
+    use HasApiTokens,HasFactory,Notifiable;
 
     /**
      * The attributes that should be hidden for serialization.

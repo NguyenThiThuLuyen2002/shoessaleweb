@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LoginGoogleController;
 
 
 /*
@@ -44,5 +45,9 @@ Route::get('/client-home-page',[AuthController::class,'dashboard_client'])->name
 Route::group(['middleware' => 'login'], function() {
     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 });
+
+//login with google
+Route::get('auth/google',[LoginGoogleController::class,'redirectToGoogle'])->name('login-with-google');
+Route::get('auth/google/callback',[LoginGoogleController::class,'handleGoogleCallback']);
 
 
