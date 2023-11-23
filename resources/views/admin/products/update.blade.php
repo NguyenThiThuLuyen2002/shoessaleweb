@@ -58,7 +58,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Hình ảnh</label>
-                        <input type="file" name="details[0][image_detail_upload123]" accept="image/*" class="image-input-detail form-control">
+                        <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control">
 
                         <img src="/upload/products/details/{{ $detail->avt_detail }}" class="show-image-detail" alt="" width="80px">
                     </div>

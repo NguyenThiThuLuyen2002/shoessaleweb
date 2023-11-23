@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
@@ -49,64 +50,94 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(CreateProductRequest $request)
-    {
-        try {
-            // dd($request->all());
-            $file_name = null;
+{
+    $file_name = null;
+    $mainProductSaved = false;
 
-            if ($request->hasFile('image_upload')) {
-                $file = $request->file('image_upload');
-                $file_name = $file->getClientOriginalName();
-                $file->move(public_path('upload/products'), $file_name);
-            }
+    try {
+        // Process main product data (e.g., image upload)
+        if ($request->hasFile('image_upload')) {
+            $file = $request->file('image_upload');
+            $ext = $file->extension();
+            $file_name = 'product-' . $request->input('name_product') . '.' . $ext;
+            $file->move(public_path('upload/products'), $file_name);
+        }
 
-            $request->merge(['avt' => $file_name]);
+        $request->merge(['avt' => $file_name]);
 
-            $product = Product::create([
-                'id_category' => $request->input('id_category'),
-                'name_product' => $request->input('name_product'),
-                'price' => $request->input('price'),
-                'description' => $request->input('description'),
-                'avt' => $request->input('avt')
-            ]);
+        // Start transaction
+        DB::beginTransaction();
 
-            $id_product = $product->id;
+        // Save main product
+        $product = Product::create([
+            'id_category' => $request->input('id_category'),
+            'name_product' => $request->input('name_product'),
+            'price' => $request->input('price'),
+            'description' => $request->input('description'),
+            'avt' => $request->input('avt')
+        ]);
 
-            if ($request->has('details')) {
-                $details = $request->input('details', []);
-                //dd($details);
-                foreach ($details as $index => $detail) {
-                    $file_detail = $request->file('details.' . $index . '.image_detail_upload123');
-                    if ($file_detail) {
-                        $file_name_detail = $file_detail->getClientOriginalName();
-                        $file_detail->move(public_path('upload/products/details'), $file_name_detail);
-                    } else {
-                        $file_name_detail = 'default123.jpg';
-                    }
+        $id_product = $product->id;
 
-                    $productDetail = ProductDetail::create([
-                        'id_product' => $id_product,
-                        'size' => $detail['size'],
-                        'color' => $detail['color'],
-                        'avt_detail' => $file_name_detail ?? 'default.jpg',
-                        'inventory_number' => $detail['inventory_number'],
-                    ]);
-                    //dd($file_name_detail);
-                    $productDetail->product()->associate($product);
-                    $productDetail->save();
+        // Process product details
+        if ($request->has('details')) {
+            $details = $request->input('details', []);
+
+            foreach ($details as $index => $detail) {
+                $file_detail = $request->file('details.' . $index . '.image_detail_upload');
+
+                // Process detail data (e.g., image upload)
+                if ($file_detail) {
+                    $ext = $file_detail->extension();
+                    $file_name_detail = 'product-detail-' . $request->input('name_product') . '.' . $ext;
+                    $file_detail->move(public_path('upload/products/details'), $file_name_detail);
+                } else {
+                    $file_name_detail = $request->input('avt');
+                    $currentPath = public_path('upload/products') . '/' . $file_name_detail;
+                    $newPath = public_path('upload/products/details') . '/' . $file_name_detail;
+                    \File::copy($currentPath, $newPath);
                 }
-            }
 
-            Session::flash('success', 'Thêm Sản phẩm thành công');
-        } catch (\Exception $err) {
+                $productDetail = ProductDetail::create([
+                    'id_product' => $id_product,
+                    'size' => $detail['size'],
+                    'color' => $detail['color'],
+                    'avt_detail' => $file_name_detail ?? 'default.jpg',
+                    'inventory_number' => $detail['inventory_number'],
+                ]);
+
+                $productDetail->product()->associate($product);
+                $productDetail->save();
+            }
+        }
+
+        DB::commit();
+
+        // Indicate that the main product is successfully saved
+        $mainProductSaved = true;
+
+        Session::flash('success', 'Thêm Sản phẩm thành công');
+    } catch (\Exception $err) {
+        // Rollback transaction in case of any error
+        DB::rollBack();
+
+        // If an error occurs and the main product is not saved, return with an input
+        if (!$mainProductSaved) {
             Session::flash('error', 'Thêm Sản phẩm lỗi');
             \Log::error($err->getMessage());
-            dd($err->getMessage());
+            //dd($err->getMessage());
             return redirect()->back()->withInput();
         }
 
+        // If an error occurs after the main product is saved, redirect back
+        Session::flash('error', 'Thêm Sản phẩm lỗi');
+        \Log::error($err->getMessage());
+        //dd($err->getMessage());
         return redirect()->back();
     }
+
+    return redirect()->back();
+}
 
 
     /**
@@ -163,10 +194,10 @@ class ProductController extends Controller
             if ($request->has('details')) {
                 $details = $request->input('details', []);
                 foreach ($details as $index => $detail) {
-                    // Kiểm tra xem trường 'image_detail_upload123' có tồn tại trong mảng $detail không
-                    if (isset($detail['image_detail_upload123'])) {
+                    // Kiểm tra xem trường 'image_detail_upload' có tồn tại trong mảng $detail không
+                    if (isset($detail['image_detail_upload'])) {
                         // Lấy thông tin từ đối tượng UploadedFile
-                        $file_detail = $detail['image_detail_upload123'];
+                        $file_detail = $detail['image_detail_upload'];
 
                         // Kiểm tra xem file đã được chọn chưa
                         if ($file_detail) {

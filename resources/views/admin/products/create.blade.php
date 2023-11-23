@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <label>Tên sản phẩm</label>
-            <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm" value="{{ old('name') }}">
+            <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm" value="{{ old('name_product') }}">
         </div>
 
         <div class="form-group">
@@ -25,7 +25,7 @@
 
         <div class="form-group">
             <label>Mô Tả </label>
-            <textarea name="description" class="form-control"></textarea>
+            <textarea name="description" class="form-control">{{ old('description') }}</textarea>
         </div>
 
         <div class="form-group">
@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Hình ảnh</label>
-                        <input type="file" name="details[0][image_detail_upload123]" accept="image/*" class="image-input-detail form-control">
+                        <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control">
 
                         <img src="" class="show-image-detail" alt="" width="80px">
                     </div>
