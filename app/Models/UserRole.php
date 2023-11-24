@@ -12,4 +12,5 @@ class UserRole extends Model
 
     // Các trường của bảng field_image
     protected $fillable = ['id_role', 'username','created_at','updated_at'];
+    
 }

@@ -19,7 +19,7 @@ use App\Http\Controllers\LoginGoogleController;
 */
 //home
 Route::get('/', function () {
-    return view('home/homepage');
+    return view('client/home/index');
 });
 
 

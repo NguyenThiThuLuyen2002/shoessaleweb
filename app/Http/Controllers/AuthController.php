@@ -3,41 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
     public function formLogin()
     {
-        return view('user/login');
+        return view('auth/login');
     }
 
-    public function login(LoginRequest $request)
+    public function login(Request $request)
     {
-        if (Auth::attempt($request->validated())) {
-            $request->session()->regenerate();
-            $user = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
-            switch ($user->username) { // Kiểm tra giá trị của trường id_role
-                case 1:
-                    // Nếu id_role là 1, chuyển hướng đến trang admin
-                    return redirect()->route('admin-home-page');
-                    break;
-
-                case 2:
-                    // Nếu id_role là 2, chuyển hướng đến trang client
-                    return redirect()->route('client_page');
-                    break;
-            }
-        }
-
-        return redirect()->back()->with([
-            'fail' => 'Login fail'
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
         ]);
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $id_role = UserRole::where('username', $user->username)->value('id_role');
+
+            if ($id_role == 1) {
+                return redirect()->route('admin-home-page');
+            } elseif ($id_role == 2) {
+                return redirect()->route('client_page');
+            } else {
+                
+            }
+        } else {
+            return back()->with('fail', 'Sai tên đăng nhập hoặc mật khẩu');
+        }
     }
 
-    //
+    //test navigate-->delete after--
     public function dashboard_client()
     {
         return view('client.index'); // Thay đổi view tương ứng
