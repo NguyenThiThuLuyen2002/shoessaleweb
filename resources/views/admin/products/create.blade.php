@@ -57,12 +57,12 @@
                     </div>
                     <div class="col-sm-3">
                         <label>Hình ảnh</label>
-                        <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control">
-
+                        <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control" data-image-id="detail-image-0">
+                        <input type="hidden" name="details[0][avt_detail_hidden]" id="avt-detail-hidden-0" value="">
                         <img src="" class="show-image-detail" alt="" width="80px">
                     </div>
                     <div class="col-sm-1">
-                        
+
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
     </div>
 
     <div style="border-top: 1px solid rgba(0, 0, 0);">
-        <button type="submit" class="btn btn-primary mt-3" >Thêm Sản Phẩm</button>
+        <button type="submit" class="btn btn-primary mt-3">Thêm Sản Phẩm</button>
     </div>
     @csrf
 </form>

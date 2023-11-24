@@ -30,36 +30,37 @@
 
         <div class="form-group">
             <label>Hình ảnh</label>
-            <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control" value="{{ $product->avt }}">
+            <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control">
             <img src="/upload/products/{{ $product->avt }}" id="show-image" alt="" width="150px">
         </div>
         <div class="form-group">
             <label>Chi tiết sản phẩm</label>
             <div id="detail-container">
-            @foreach ($product->details as $detail)
+                @foreach ($product->details as $index => $detail)
                 <div class="row detail-row">
+                    <input type="hidden" name="details[{{ $index }}][id]" value="{{ $detail->id }}">
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Size</label>
-                            <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size" value="{{ $detail->size }}">
+                            <input type="number" class="form-control" name="details[{{ $index }}][size]" placeholder="Nhập size" value="{{ $detail->size }}">
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Màu sắc</label>
-                            <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc" value="{{ $detail->color }}">
+                            <input type="text" class="form-control" name="details[{{ $index }}][color]" placeholder="Nhập màu sắc" value="{{ $detail->color }}">
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Số lượng</label>
-                            <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng" value="{{ $detail->inventory_number }}">
+                            <input type="number" class="form-control" name="details[{{ $index }}][inventory_number]" placeholder="Nhập số lượng" value="{{ $detail->inventory_number }}">
                         </div>
                     </div>
                     <div class="col-sm-3">
                         <label>Hình ảnh</label>
-                        <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control">
-
+                        <input type="file" name="details[{{ $index }}][image_detail_upload]" accept="image/*" class="image-input-detail form-control">
+                        <input type="hidden" name="details[{{ $index }}][avt_detail_hidden]" value="{{ $detail->avt_detail }}">
                         <img src="/upload/products/details/{{ $detail->avt_detail }}" class="show-image-detail" alt="" width="80px">
                     </div>
                     <div class="col-sm-1">
@@ -67,11 +68,7 @@
                     </div>
                 </div>
                 @endforeach
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <a href="javascript:;" class="btn btn-success" id="add-new-detail">Thêm</a>
-                </div>
+
             </div>
         </div>
     </div>
@@ -83,23 +80,4 @@
 </form>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="/template/admin/js/product.js"></script>
-<script>
-    // Sự kiện khi trang tải
-    document.addEventListener('DOMContentLoaded', function() {
-        // Thiết lập giá trị mặc định cho input file
-        var imageDetailInput = document.getElementById('image-detail-input');
-        var avtDetailInput = document.getElementById('avt-detail');
-        
-        imageDetailInput.addEventListener('change', function() {
-            // Nếu người dùng đã chọn ảnh mới, không cần thiết lập giá trị mặc định
-            if (this.files.length > 0) {
-                avtDetailInput.value = '';
-            } else {
-                // Nếu người dùng không chọn ảnh mới, sử dụng giá trị avt của sản phẩm chính
-                this.value = ''; // Xóa giá trị để trigger sự kiện change khi thiết lập giá trị
-                avtDetailInput.value = "{{ $product->avt }}";
-            }
-        });
-    });
-</script>
 @endsection

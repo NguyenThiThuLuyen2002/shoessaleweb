@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Product\CreateDetailProductRequest;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Category;
@@ -59,7 +60,7 @@ class ProductController extends Controller
             if ($request->hasFile('image_upload')) {
                 $file = $request->file('image_upload');
                 $ext = $file->extension();
-                $file_name = 'product-' . $request->input('name_product') . '.' . $ext;
+                $file_name = 'product-' . time() . '.' . $ext;;
                 $file->move(public_path('upload/products'), $file_name);
             }
 
@@ -89,7 +90,7 @@ class ProductController extends Controller
                     // Process detail data (e.g., image upload)
                     if ($file_detail) {
                         $ext = $file_detail->extension();
-                        $file_name_detail = 'product-detail-' . $request->input('name_product') . '.' . $ext;
+                        $file_name_detail = 'product-detail-' . time() . '.' . $ext;;
                         $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
                         $file_name_detail = $request->input('avt');
@@ -102,7 +103,7 @@ class ProductController extends Controller
                         'id_product' => $id_product,
                         'size' => $detail['size'],
                         'color' => $detail['color'],
-                        'avt_detail' => $file_name_detail ?? 'default.jpg',
+                        'avt_detail' => $file_name_detail,
                         'inventory_number' => $detail['inventory_number'],
                     ]);
 
@@ -126,6 +127,76 @@ class ProductController extends Controller
                 Session::flash('error', 'Thêm Sản phẩm lỗi');
                 \Log::error($err->getMessage());
                 //dd($err->getMessage());
+                return redirect()->back()->withInput();
+            }
+
+            // If an error occurs after the main product is saved, redirect back
+            Session::flash('error', 'Thêm Sản phẩm lỗi');
+            \Log::error($err->getMessage());
+            //dd($err->getMessage());
+            return redirect()->back();
+        }
+
+        return redirect()->back();
+    }
+
+    public function storeDetail(CreateDetailProductRequest $request, $id)
+    {
+        $mainProductSaved = false;
+
+        try {
+            $product = Product::with('details')->findOrFail($id);
+
+            $id_product = $product->id;
+            $avt_product = $product->avt;
+
+            // Process product details
+            if ($request->has('details')) {
+                $details = $request->input('details', []);
+
+                foreach ($details as $index => $detail) {
+                    $file_detail = $request->file('details.' . $index . '.image_detail_upload');
+
+                    // Process detail data (e.g., image upload)
+                    if ($file_detail) {
+                        $ext = $file_detail->extension();
+                        $file_name_detail = 'product-detail' . time() . '.' . $ext;
+                        $file_detail->move(public_path('upload/products/details'), $file_name_detail);
+                    } else {
+                        $file_name_detail = $avt_product;
+                        $currentPath = public_path('upload/products') . '/' . $file_name_detail;
+                        $newPath = public_path('upload/products/details') . '/' . $file_name_detail;
+                        \File::copy($currentPath, $newPath);
+                    }
+
+                    $productDetail = ProductDetail::create([
+                        'id_product' => $id_product,
+                        'size' => $detail['size'],
+                        'color' => $detail['color'],
+                        'avt_detail' => $file_name_detail,
+                        'inventory_number' => $detail['inventory_number'],
+                    ]);
+
+                    $productDetail->product()->associate($product);
+                    $productDetail->save();
+                }
+            }
+
+            DB::commit();
+
+            // Indicate that the main product is successfully saved
+            $mainProductSaved = true;
+
+            Session::flash('success', 'Thêm Sản phẩm thành công');
+        } catch (\Exception $err) {
+            // Rollback transaction in case of any error
+            DB::rollBack();
+
+            // If an error occurs and the main product is not saved, return with an input
+            if (!$mainProductSaved) {
+                Session::flash('error', 'Thêm Sản phẩm lỗi');
+                \Log::error($err->getMessage());
+                dd($err->getMessage());
                 return redirect()->back()->withInput();
             }
 
@@ -169,7 +240,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, string $id)
     {
-        
+        //dd($request->all());
         try {
             // Lấy thông tin sản phẩm cần cập nhật
             $product = Product::findOrFail($id);
@@ -178,7 +249,7 @@ class ProductController extends Controller
             if ($request->hasFile('image_upload')) {
                 $file = $request->file('image_upload');
                 $ext = $file->extension();
-                $file_name = 'product-' . $request->input('name_product') . '.' . $ext;
+                $file_name = 'product-' . time() . '.' . $ext;;
                 $file->move(public_path('upload/products'), $file_name);
 
 
@@ -202,24 +273,22 @@ class ProductController extends Controller
                     // Process detail data (e.g., image upload)
                     if ($file_detail) {
                         $ext = $file_detail->extension();
-                        $file_name_detail = 'product-detail-' . $request->input('name_product') . '.' . $ext;
+                        $file_name_detail = 'product-detail' . time() . '.' . $ext;;
                         $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
-                        $file_name_detail =  $file_name;
-                        $currentPath = public_path('upload/products') . '/' . $file_name_detail;
-                        $newPath = public_path('upload/products/details') . '/' . $file_name_detail;
-                        \File::copy($currentPath, $newPath);
+                        $file_name_detail =  $detail['avt_detail_hidden'];
                     }
 
-                    // Lấy hoặc tạo thông tin chi tiết sản phẩm
-                    $productDetail = ProductDetail::updateOrCreate(
-                        ['id_product' => $id, 'size' => $detail['size']],
-                        [
-                            'color' => $detail['color'],
-                            'avt_detail' => $file_name_detail,
-                            'inventory_number' => $detail['inventory_number'],
-                        ]
-                    );
+                    // Tìm chi tiết sản phẩm cụ thể cần cập nhật
+                    $productDetail = ProductDetail::findOrFail($detail['id']);
+
+                    // Cập nhật thông tin chi tiết sản phẩm
+                    $productDetail->update([
+                        'size' => $detail['size'],
+                        'color' => $detail['color'],
+                        'avt_detail' => $file_name_detail,
+                        'inventory_number' => $detail['inventory_number'],
+                    ]);
                 }
             }
 
@@ -233,14 +302,44 @@ class ProductController extends Controller
 
         return redirect()->back();
     }
-
-
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $product = Product::findOrFail($id);
+            $product->delete();
+
+            return redirect()->back()->with('success', 'Xóa sản phẩm thành công');
+        } catch (\Exception $e) {
+            // Nếu có lỗi, xử lý nó tại đây
+            return redirect()->back()->with('error', 'Xóa sản phẩm thất bại');
+        }
+    }
+
+    public function destroyDetail($id, $deleteAll = false)
+    {
+        try {
+            $detail = ProductDetail::findOrFail($id);
+            $detail->delete();
+
+            return redirect()->back()->with('success', 'Xóa chi tiết sản phẩm thành công');
+        } catch (\Exception $e) {
+            // Nếu có lỗi, xử lý nó tại đây
+            return redirect()->back()->with('error', 'Xóa chi tiết sản phẩm thất bại');
+        }
+    }
+    public function destroyAllDetail($id)
+    {
+        try {
+            // Xóa tất cả chi tiết của sản phẩm
+            ProductDetail::where('id_product', $id)->delete();
+
+            return redirect()->back()->with('success', 'Tất cả chi tiết đã được xóa thành công!');
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return redirect()->back()->with('error', 'Xóa chi tiết thất bại.');
+        }
     }
 }

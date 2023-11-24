@@ -23,7 +23,21 @@
         <td>
             <a href="/admin/products/detail/{{ $product->id }}" class="btn btn-primary">Detail</a>
             <a href="/admin/products/update/{{ $product->id }}" class="btn btn-warning">Edit</a>
-            <button class="btn btn-delete btn-danger">Delete</button>
+            <form id="delete-form" action="/admin/products/destroy/{{ $product->id }}" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="button" class="btn btn-delete btn-danger" onclick="confirmDelete()">Delete</button>
+            </form>
+
+            <script>
+                function confirmDelete() {
+                    if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+                        document.getElementById('delete-form').submit();
+                    }
+                }
+            </script>
+
+
         </td>
     </tr>
     @endforeach
