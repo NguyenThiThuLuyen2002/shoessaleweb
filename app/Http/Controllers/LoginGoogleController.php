@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
-use App\Models\Role;
+use App\Models\UserRole;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,18 +26,19 @@ class LoginGoogleController extends Controller
        
             $finduser = User::where('google_id', $user->getId())->first();
        
-            if($finduser){
-       
-                $newUser = User::create([
-                    'name' => $user->name->getName(),
-                    'email' => $user->email->getEmail(),
-                    'google_id'=> $user->id->getId(),
+            if($user){
+                    $newUser = User::create([
+                    'username' => $user->getName(),
+                    'account_name' => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'google_id'=> $user->getId(),
                     'created_at' => Carbon::now(),
                     'updated_at'=> Carbon::now(),
                                    
                 ]);
-                $user_role = new Role();
-                $user_role->id = 2;
+                $user_role = new UserRole();
+                $user_role->id_role = 2;
+                $user_role-> username = $newUser->username;
                 $user_role->save();
 
             }

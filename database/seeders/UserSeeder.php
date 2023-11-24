@@ -19,48 +19,41 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name' => 'nguyenthanhminh',
-                'email' => 'minh@gmail.com',
+                'username' => 'hongkhanh',
+                'account_name'=>'Đỗ Thị Hồng Khánh',                
+                'email' => 'hongkhanh@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '2'
+               
             ],
 
             [
-                'name' => 'lekhanh',
-                'email' => 'khanh@gmail.com',
+                'username' => 'thuluyen', 
+                'account_name'=>'Nguyễn Thị Thu Luyến',
+                'email' => 'thuluyen@gmail.com',
                 'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('ABC12345'),
+                'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '1'
+                
             ],
 
             [
-                'name' => 'tranvan',
-                'email' => 'van@gmail.com',
+                'username' => 'thaonguyet',
+                'account_name'=>'Nguyễn Lê Thảo Nguyệt',
+                'email' => 'thaonguyet@gmail.com',
                 'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('ABC12345'),
+                'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '2'
-            ],
-
-            [
-                'name' => 'letuananh',
-                'email' => 'tuananh@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => bcrypt('ABC12345'),
-                'remember_token' => '',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'id_role' => '2'
-            ],
+               
+            ]
+          
         ]);
     }
 }

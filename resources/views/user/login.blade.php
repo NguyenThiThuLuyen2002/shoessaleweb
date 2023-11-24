@@ -14,9 +14,9 @@
 
   <form action="{{ route('login') }}" method="POST">
     @csrf
-    <label for="fname">Email:</label><br>
-    <input type="text" name="email"><br>
-    @error('email')
+    <label for="fname">username:</label><br>
+    <input type="text" name="username"><br>
+    @error('username')
     <div>{{ $message }}</div>
     @enderror
     <label for="lname">Password:</label><br>

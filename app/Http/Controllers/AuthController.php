@@ -19,7 +19,7 @@ class AuthController extends Controller
         if (Auth::attempt($request->validated())) {
             $request->session()->regenerate();
             $user = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
-            switch ($user->id_role) { // Kiểm tra giá trị của trường id_role
+            switch ($user->username) { // Kiểm tra giá trị của trường id_role
                 case 1:
                     // Nếu id_role là 1, chuyển hướng đến trang admin
                     return redirect()->route('admin-home-page');

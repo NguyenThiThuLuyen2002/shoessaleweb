@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserPermission extends Model
+class UserRole extends Model
 {
-    protected $table = 'roles'; // Tên của bảng trong cơ sở dữ liệu
+    protected $table = 'user_role'; // Tên của bảng trong cơ sở dữ liệu
     protected $primaryKey = 'id'; // Khóa chính của bảng
 
     // Các trường của bảng field_image
-    protected $fillable = ['id', 'name_role','created_at','updated_at'];
+    protected $fillable = ['id_role', 'username','created_at','updated_at'];
 }
