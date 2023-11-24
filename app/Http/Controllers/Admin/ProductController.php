@@ -60,7 +60,7 @@ class ProductController extends Controller
             if ($request->hasFile('image_upload')) {
                 $file = $request->file('image_upload');
                 $ext = $file->extension();
-                $file_name = 'product-' . time() . '.' . $ext;;
+                $file_name = 'product-' . uniqid() . '.' . $ext;;
                 $file->move(public_path('upload/products'), $file_name);
             }
 
@@ -90,7 +90,7 @@ class ProductController extends Controller
                     // Process detail data (e.g., image upload)
                     if ($file_detail) {
                         $ext = $file_detail->extension();
-                        $file_name_detail = 'product-detail-' . time() . '.' . $ext;;
+                        $file_name_detail = 'product-detail-' . uniqid() . '.' . $ext;;
                         $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
                         $file_name_detail = $request->input('avt');
@@ -160,7 +160,7 @@ class ProductController extends Controller
                     // Process detail data (e.g., image upload)
                     if ($file_detail) {
                         $ext = $file_detail->extension();
-                        $file_name_detail = 'product-detail' . time() . '.' . $ext;
+                        $file_name_detail = 'product-detail' . uniqid() . '.' . $ext;
                         $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
                         $file_name_detail = $avt_product;
@@ -249,7 +249,7 @@ class ProductController extends Controller
             if ($request->hasFile('image_upload')) {
                 $file = $request->file('image_upload');
                 $ext = $file->extension();
-                $file_name = 'product-' . time() . '.' . $ext;;
+                $file_name = 'product-' . uniqid() . '.' . $ext;;
                 $file->move(public_path('upload/products'), $file_name);
 
 
@@ -273,7 +273,7 @@ class ProductController extends Controller
                     // Process detail data (e.g., image upload)
                     if ($file_detail) {
                         $ext = $file_detail->extension();
-                        $file_name_detail = 'product-detail' . time() . '.' . $ext;;
+                        $file_name_detail = 'product-detail' . uniqid() . '.' . $ext;;
                         $file_detail->move(public_path('upload/products/details'), $file_name_detail);
                     } else {
                         $file_name_detail =  $detail['avt_detail_hidden'];
