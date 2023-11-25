@@ -11,7 +11,7 @@
                 <img src="https://i.pinimg.com/736x/bc/43/98/bc439871417621836a0eeea768d60944.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Name admin</a>
+                <a href="#" class="d-block"> Đỗ Thị Hồng Khánh </a>
             </div>
         </div>
 
@@ -94,7 +94,7 @@
                             </a>
                         </li>
                     </ul>
-              
+
 
                 </li>
                 <li>

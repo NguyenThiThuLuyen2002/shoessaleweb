@@ -25,16 +25,35 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    {{-- <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="{{ asset('template/client/img/icon/login.png') }}" alt=""></a>
-                    <a href="#"><img src="{{ asset('template/client/img/icon/cart.png') }}" alt=""> <span>0</span></a> 
-                    <div class="price">$0.00</div> --}}
-                    <a href="{{ route('form_login') }}" class="primary-btn">ĐĂNG NHẬP</a>
-                  
-                  
+                    @if (session('username'))
+                    @php
+                        $user = \App\Models\User::where('username', session('username'))->first();
+                    @endphp
+                    <div class="nav-item dropdown">
+                        <a href="#" style="height: 100%;color: #e53637;" class="nav-link dropdown-toggle"
+                            onclick="toggleDropdown()" data-bs-toggle="dropdown">  
+                            <!--return acc_name-->                         
+                            {{ $user->account_name }} 
+                        </a>
+                        <!--dropdownlist-->
+                        <div id="userDropdown" class="dropdown-menu">
+                            <a href="" class="dropdown-item"> Thông
+                                tin cá nhân</a>
+                                <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
+                                    @csrf
+                                </form>
+                        </div>
+                    </div>
+                @else
+                    <a style="margin-left: 20px;color: inherit;" href="{{ route('login') }}">Đăng nhập</a>
+                @endif
+    
                 </div>
             </div>
-        </div>
-        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>   
     </div>
 </header>
+<script src="template/client/js/header-ddl.js"></script>
