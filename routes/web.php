@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\Auth\LoginGoogleController;
 use App\Http\Controllers\Client\HomeController;
 
 
