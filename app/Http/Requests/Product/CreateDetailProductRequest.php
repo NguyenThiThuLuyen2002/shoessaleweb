@@ -22,8 +22,8 @@ class CreateDetailProductRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'details.*.size.required' => 'Kích thước sản phẩm không được để trống!',
-            'details.*.size.gt' => 'Kích thước sản phẩm phải lớn hơn 0!',
+            'details.*.size.required' => 'Kích thước không được để trống!',
+            'details.*.size.gt' => 'Kích thước phải lớn hơn 0!',
             'details.*.color.required' => 'Màu sắc không được để trống!',
             'details.*.inventory_number.required' => 'Số lượng không được để trống!',
             'details.*.inventory_number.gt' => 'Số lượng phải lớn hơn 0!',

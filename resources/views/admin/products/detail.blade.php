@@ -4,49 +4,58 @@
 
 <p><a href="/admin/products/list">Danh sách sản phẩm </a>/ <b>{{ $product->name_product }}</b></p>
 <form action="" method="POST" enctype="multipart/form-data">
-<div class="form-group">
-    <label>Thêm chi tiết sản phẩm</label>
-    <div id="detail-container">
-        <div class="row detail-row">
-            <div class="col-sm-2">
-                <div class="form-group">
-                    <label>Size</label>
-                    <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size">
+    <div class="form-group">
+        <label>Thêm chi tiết sản phẩm</label>
+        <div id="detail-container">
+            <div class="row detail-row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Size</label>
+                        <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size">
+                        @error('details.*.size')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="form-group">
-                    <label>Màu sắc</label>
-                    <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Màu sắc</label>
+                        <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc">
+                        @error('details.*.color')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-2">
-                <div class="form-group">
-                    <label>Số lượng</label>
-                    <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Số lượng</label>
+                        <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng">
+                        @error('details.*.inventory_number')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-3">
-                <label>Hình ảnh</label>
-                <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control" data-image-id="detail-image-0">
-                <input type="hidden" name="details[0][avt_detail_hidden]" id="avt-detail-hidden-0" value="">
-                <img src="" class="show-image-detail" alt="" width="80px">
-            </div>
-            <div class="col-sm-1">
+                <div class="col-sm-3">
+                    <label>Hình ảnh</label>
+                    <input type="file" name="details[0][image_detail_upload]" accept="image/*" class="image-input-detail form-control" data-image-id="detail-image-0">
+                    <input type="hidden" name="details[0][avt_detail_hidden]" id="avt-detail-hidden-0" value="">
+                    <img src="" class="show-image-detail" alt="" width="80px">
+                </div>
+                <div class="col-sm-1">
 
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <a href="javascript:;" class="btn btn-success" id="add-new-detail">Thêm</a>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-3">
-            <a href="javascript:;" class="btn btn-success" id="add-new-detail">Thêm</a>
-        </div>
+    <div style="border-top: 1px solid rgba(0, 0, 0);">
+        <button type="submit" class="btn btn-primary mt-3">Thêm Chi tiết</button>
     </div>
-</div>
-<div style="border-top: 1px solid rgba(0, 0, 0);">
-    <button type="submit" class="btn btn-primary mt-3">Thêm Chi tiết</button>
-</div>
-@csrf
+    @csrf
 </form>
 @if ($product->details->isNotEmpty())
 <table class="table table-hover">

@@ -16,22 +16,34 @@
         <div class="form-group">
             <label>Tên sản phẩm</label>
             <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm" value="{{ old('name_product') }}">
+            @error('name_product')
+            <span class="text-danger"> {{ $message }}</span>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Giá </label>
             <input type="number" name="price" class="form-control" placeholder="Nhập giá" value="{{ old('price') }}">
+            @error('price')
+            <span class="text-danger"> {{ $message }}</span>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Mô Tả </label>
             <textarea name="description" class="form-control">{{ old('description') }}</textarea>
+            @error('description')
+            <span class="text-danger"> {{ $message }}</span>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Hình ảnh</label>
             <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control">
             <img src="" id="show-image" alt="" width="150px">
+            @error('image_upload')
+            <span class="text-danger"> {{ $message }}</span>
+            @enderror
         </div>
         <div class="form-group">
             <label>Chi tiết sản phẩm</label>
@@ -41,18 +53,27 @@
                         <div class="form-group">
                             <label>Size</label>
                             <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size">
+                            @error('details.*.size')
+                            <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Màu sắc</label>
                             <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc">
+                            @error('details.*.color')
+                            <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
                             <label>Số lượng</label>
                             <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng">
+                            @error('details.*.inventory_number')
+                            <span class="text-danger"> {{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-sm-3">
