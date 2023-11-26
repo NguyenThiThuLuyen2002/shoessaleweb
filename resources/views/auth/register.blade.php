@@ -40,11 +40,11 @@
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="row mb-4">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Tên đăng nhập') }}</label>
+                            <label for="username" class="col-md-4 col-form-label text-md-end">{{ __('Tên đăng nhập') }}</label>
                             <div class="col-md-7">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
-                                    name="name"  required autocomplete="name" autofocus>
-                                @error('name')
+                                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror"
+                                name="username"  required autocomplete="username" autofocus>
+                                @error('username')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

@@ -37,9 +37,20 @@ Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
+
+// Route::get('/email/verify/{username}/{hash}', function (Request $request, $username, $hash) {
+//     $user = \App\Models\User::where('username', $username)->first();
+//     if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+//         $user->markEmailAsVerified();
+//         event(new \Illuminate\Auth\Events\Verified($user));
+//         return redirect('form-login'); // or wherever you want to redirect after verification
+//     }
+
+//     return abort(404); // or handle invalid verification link as needed
+// })->name('verification.verify');
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-    return redirect('admin');
+    return redirect('form_login');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
@@ -65,7 +76,7 @@ Route::prefix('admin')->group(function () {
 // login
 
 Route::get('form-login', [AuthController::class, 'formLogin'])->name('form_login');
-Route::post('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('login')->middleware('guest');;
 
 //login decentralization
 Route::get('/client-home-page',[AuthController::class,'dashboard_client'])->name('client_page');

@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
     //
     public function formRegister(){
-        return view("users.register");
+        return view("auth.register");
     }
     
     public function register(RegisterRequest $request){
@@ -22,19 +22,21 @@ class AuthController extends Controller
         $params = $request->validated();
         $params['password'] = bcrypt($params['password']);
 
-        // Send email verification notification
-        $user->sendEmailVerificationNotification();
 
         if($user)
         {
-            // return redirect() -> route('admin');
-            return redirect('admin')->with('status', 'Registration successful. Please check your email for verification.');
+            // Send email verification notification
+            $user->sendEmailVerificationNotification(); 
+          
+            return redirect('form-login')->with('status', 'Registration successful. Please check your email for verification.');
         }
         return redirect() -> back() -> with([
             'fail'=> 'create account fail'
         ]);
     }
-                                        // login
+                     
+    
+    // login
 
     public function formLogin()
     {
