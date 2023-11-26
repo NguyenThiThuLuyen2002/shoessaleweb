@@ -48,27 +48,10 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-store-alt"></i>
-                        <p> Sản Phẩm
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
+                    <a href="/admin/products/list" class="nav-link">
+                        <i class="nav-icon fas fa-box-open"></i>
+                        <p> Sản Phẩm </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Thêm Sản Phẩm</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Danh Sách Sản Phẩm</p>
-                            </a>
-                        </li>
-
-                    </ul>
                 </li>
 
                 <li class="nav-item">
@@ -82,9 +65,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cart-plus"></i>
-                        <p> Giỏ Hàng
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
+                        <p> Giỏ Hàng </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
