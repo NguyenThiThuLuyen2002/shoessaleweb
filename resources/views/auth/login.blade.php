@@ -27,7 +27,7 @@
                         {{ session('fail') }}
                     </div>
                 @endif
-                <input class="form__input" type="text" id="username" name="username" placeholder="Tên đăng nhập"
+                <input class="form__input" type="text" id="email" name="email" placeholder="Email"
                     required>
                 <!-- Add the 'required' attribute above -->
                 <div class="input-wrapper">
@@ -42,7 +42,7 @@
                 <br>
                 
 
-                <a href="{{ route('login-with-google') }}">
+                <a href="{{ route('auth.google') }}">
                    
                     Đăng nhập với google
                 </a>

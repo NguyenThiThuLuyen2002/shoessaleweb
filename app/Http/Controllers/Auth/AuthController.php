@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -14,18 +13,18 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
-            $id_role = UserRole::where('username', $user->username)->value('id_role');
-            session()->put('username', $user->username);
+            $id_role = User::where('email', $user->email)->value('id_role');
+            session()->put('name', $user->name);
             if ($id_role == 1) {
                 return redirect()->route('admin-home-page');
             } elseif ($id_role == 2) {
-                return redirect('');
+                return redirect('/');
             } else {
                 
             }

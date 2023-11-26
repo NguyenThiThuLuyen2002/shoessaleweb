@@ -25,15 +25,15 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    @if (session('username'))
+                    @if (session('name'))
                     @php
-                        $user = \App\Models\User::where('username', session('username'))->first();
+                        $user = \App\Models\User::where('name', session('name'))->first();
                     @endphp
                     <div class="nav-item dropdown">
                         <a href="#" style="height: 100%;color: #e53637;" class="nav-link dropdown-toggle"
                             onclick="toggleDropdown()" data-bs-toggle="dropdown">  
-                            <!--return acc_name-->                         
-                            {{ $user->account_name }} 
+                            <!--return acc_name-->                        
+                            {{ $user->name }} 
                         </a>
                         <!--dropdownlist-->
                         <div id="userDropdown" class="dropdown-menu">

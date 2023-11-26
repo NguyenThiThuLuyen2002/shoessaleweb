@@ -18,14 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
-        'account_name',
+        'name',
         'email',
         'password',
+        'id_role',
         'google_id',
-        'created_at',
-        'updated_at',
-            
     ];
     use HasApiTokens,HasFactory,Notifiable;
 
