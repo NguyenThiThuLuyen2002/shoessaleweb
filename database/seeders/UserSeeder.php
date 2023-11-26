@@ -19,48 +19,41 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name' => 'nguyenthanhminh',
-                'email' => 'minh@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'name' => 'khanhdo',
+                'email' => 'hongkhanh@gmail.com',
+                'email_verified_at' => null,
+                'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '2'
+                'id_role' => 1,  
+                'google_id' => null             
             ],
 
             [
-                'name' => 'lekhanh',
-                'email' => 'khanh@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'name' => 'luyen',
+                'email' => 'thuluyen@gmail.com',
+                'email_verified_at' => null,
+                'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '1'
+                'id_role' => 2,   
+                'google_id' => null                
             ],
 
             [
-                'name' => 'tranvan',
-                'email' => 'van@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
+                'name' => 'thaonguyet',
+                'email' => 'thaonguyet@gmail.com',
+                'email_verified_at' => null,
+                'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
-                'id_role' => '2'
-            ],
-
-            [
-                'name' => 'letuananh',
-                'email' => 'tuananh@gmail.com',
-                'email_verified_at' => Carbon::now(),
-                'password' => 'ABC12345',
-                'remember_token' => '',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'id_role' => '2'
-            ],
+                'id_role' => 2,  
+                'google_id' => null
+               
+            ]
         ]);
     }
 }

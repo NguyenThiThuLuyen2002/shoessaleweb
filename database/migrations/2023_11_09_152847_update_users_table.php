@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('id_role');
+            $table->string('google_id')->nullable();
 
             $table->foreign('id_role')
                 ->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
