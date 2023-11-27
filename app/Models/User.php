@@ -18,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
+        'name',
         'account_name',
         'email',
         'password',
@@ -50,8 +50,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    // public function getEmailForVerification()
-    // {
-    //     return $this->email; // Replace with the actual column that contains the email address
-    // }
+    public function getEmailForVerification()
+    {
+        return $this->email; // Replace with the actual column that contains the email address
+    }
 }

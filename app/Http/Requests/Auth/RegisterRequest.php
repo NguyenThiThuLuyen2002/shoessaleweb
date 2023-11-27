@@ -23,10 +23,10 @@ class RegisterRequest extends FormRequest
     {
         return [
             //
-            'username' => ['required'],
+            'name' => ['required'],
             'email'=> ['required','unique:users,email'],
             'password'=> ['required'],
-            'account_name' => ['sometimes'], // "sometimes" means validate if it is present, or leave it alone otherwise.
+            'id_role' => ['sometimes'], // "sometimes" means validate if it is present, or leave it alone otherwise.
         ];
     }
 
@@ -44,7 +44,7 @@ class RegisterRequest extends FormRequest
  
          $this->merge([
  
-             'account_name' => $this->account_name ?? "null", // Sets a default role of 2 if none is provided.
+             'id_role' => $this->account_name ?? 2, // Sets a default role of 2 if none is provided.
  
          ]);
  

@@ -28,35 +28,40 @@ Route::get('/', function () {
 
 Route::get('register', [AuthController::class, 'formRegister'])->  name('form_register');
 Route::post('register', [AuthController::class,'register'])->name('register');
-Route::get('home', function () {
-    return view('welcome');
-});
+
+// Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form_verifyEmail');
+// Route::post('verifyEmail', [AuthController::class,'verifyEmail'])->name('verifyEmail');
 
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form-verifyEmail');
+Route::post('/verifyEmail/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
+
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
 
 
-// Route::get('/email/verify/{username}/{hash}', function (Request $request, $username, $hash) {
-//     $user = \App\Models\User::where('username', $username)->first();
-//     if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-//         $user->markEmailAsVerified();
-//         event(new \Illuminate\Auth\Events\Verified($user));
-//         return redirect('form-login'); // or wherever you want to redirect after verification
-//     }
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+    $user = \App\Models\User::find($id);
 
-//     return abort(404); // or handle invalid verification link as needed
-// })->name('verification.verify');
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('form_login');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+    if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        $user->markEmailAsVerified();
+        event(new \Illuminate\Auth\Events\Verified($user));
+        return redirect('form-login'); // or wherever you want to redirect after verification
+    }
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+    return abort(404); // or handle invalid verification link as needed
+})->name('verification.verify');
+
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+//     return redirect('form_login');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+//     return back()->with('message', 'Verification link sent!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
 

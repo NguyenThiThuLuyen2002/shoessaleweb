@@ -27,7 +27,7 @@
                         {{ __('Before proceeding, please check your email for a verification link.') }}
                         {{ __('If you did not receive the email') }},
 
-                        <form method="POST" action="{{ route('verification.send') }}">
+                        <form method="POST" action="{{ isset($user) ? route('verifyEmail', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]) : '#' }}">
                             @csrf
                             <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
                         </form>
