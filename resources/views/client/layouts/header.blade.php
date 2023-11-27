@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="template/client/img/logo.png" alt=""></a>
+                    <a href="/"><img src="template/client/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Trang chủ</a></li>
+                        <li class="active"><a href="/">Trang chủ</a></li>
                         <li><a href="#">Danh mục</a>
                             <ul class="dropdown">
                                 <li><a href="">Sandal</a></li>

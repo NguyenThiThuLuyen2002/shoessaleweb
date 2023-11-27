@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\LoginGoogleController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\HomeController;
 
 
@@ -21,7 +22,14 @@ use App\Http\Controllers\Client\HomeController;
 |
 */
 //home
-Route::get('/', [HomeController::class, 'index'])->name('client.home');
+Route::controller(HomeController::class)->group(function(){
+    Route::get('/', 'index')->name('client.home');
+    Route::get('product-detail/{id}', 'detail')->name('client.products.detail');
+});
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+
 // admin
 Route::prefix('admin')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
@@ -71,3 +79,4 @@ Route::controller(GoogleController::class)->group(function(){
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
+
