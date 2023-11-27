@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use function Laravel\Prompts\alert;
-
+use Illuminate\Support\Facades\Password;
 
 class AuthController extends Controller 
 {
@@ -75,6 +75,37 @@ class AuthController extends Controller
 
         // return abort(404); // or handle invalid verification link as needed
   
+
+//--------------------------------------FORGOT PASS------------------
+public function showForgotPasswordForm()
+{
+    return view('auth.forgot-password');
+}
+
+public function sendResetLinkEmail(Request $request)
+{
+    $request->validate(['email' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+}
+//reset form 
+public function showResetForm(Request $request, $token = null)
+    {
+        return view('auth.password.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
+
+
+
+
+
     // login
 
     public function formLogin()

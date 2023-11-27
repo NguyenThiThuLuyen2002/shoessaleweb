@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LoginGoogleController;
+use App\Http\Controllers\ResetPasswordController;
 
 
 /*
@@ -29,8 +30,15 @@ Route::get('/', function () {
 Route::get('register', [AuthController::class, 'formRegister'])->  name('form_register');
 Route::post('register', [AuthController::class,'register'])->name('register');
 
-// Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form_verifyEmail');
-// Route::post('verifyEmail', [AuthController::class,'verifyEmail'])->name('verifyEmail');
+Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot.password.form');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.password.submit');
+
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])
+    ->name('password.reset');
+
+Route::post('/reset-password', [ResetPasswordController::class, 'reset'])
+    ->name('password.update');
+
 
 
 Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form_verify_email');
