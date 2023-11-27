@@ -33,7 +33,7 @@ Route::post('register', [AuthController::class,'register'])->name('register');
 // Route::post('verifyEmail', [AuthController::class,'verifyEmail'])->name('verifyEmail');
 
 
-Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form-verifyEmail');
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'formVerifyEmail'])->name('form_verify_email');
 Route::post('/verifyEmail/{id}/{hash}', [AuthController::class, 'verifyEmail'])->name('verifyEmail');
 
 // Route::get('/email/verify', function () {

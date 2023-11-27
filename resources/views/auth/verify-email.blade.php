@@ -29,7 +29,7 @@
 
                         <form method="POST" action="{{ isset($user) ? route('verifyEmail', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]) : '#' }}">
                             @csrf
-                            <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                            <button  type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
                         </form>
                     </div>
                 </div>

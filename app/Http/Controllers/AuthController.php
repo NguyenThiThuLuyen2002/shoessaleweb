@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use function Laravel\Prompts\alert;
 
 
 class AuthController extends Controller 
@@ -27,9 +28,11 @@ class AuthController extends Controller
         if($user)
         {
             // Send email verification notification
-            $user->sendEmailVerificationNotification(); 
+            $user->sendEmailVerificationNotification();
+
+            return $this-> formVerifyEmail($user->id,sha1($user->getEmailForVerification()));
           
-            return redirect()->route('form-verifyEmail', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())])->with('status', 'Registration successful. Please check your email for verification.');
+            // return redirect()->route('form_verify_email', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())])->with('status', 'Registration successful. Please check your email for verification.');
         }
         return redirect() -> back() -> with([
             'fail'=> 'create account fail'
@@ -40,14 +43,14 @@ class AuthController extends Controller
     public function formVerifyEmail($id, $hash)
     {
         // You may want to add some error checking here to handle cases where $id or $hash is not provided or is invalid.
-
+        alert('Please check you email !');
         $user = User::find($id);
 
         if (!$user) {
             return abort(404); // Handle the case where the user is not found.
         }
 
-        return view('auth.verify-email', ['user' => $user]);
+        return view('auth.verify-email', ['user' => $user, 'hash' => $hash]);
     }
 
     public function verifyEmail($id, $hash)
@@ -55,15 +58,23 @@ class AuthController extends Controller
         Log::info("ID: $id, Hash: $hash"); // Log the values
 
         $user = User::find($id);
-       
-        if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            $user->markEmailAsVerified();
-            event(new \Illuminate\Auth\Events\Verified($user));
-            return redirect('form-login'); // or wherever you want to redirect after verification
+        if($user){
+            $user->sendEmailVerificationNotification();
+            return $this-> formVerifyEmail($user->id, $hash);
         }
+        return redirect() -> back() -> with([
+            'fail'=> 'create account fail'
+        ]);
+        
+    }   
+        // if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+        //     $user->markEmailAsVerified();
+        //     event(new \Illuminate\Auth\Events\Verified($user));
+        //     return redirect('form-login'); // or wherever you want to redirect after verification
+        // } 
 
-        return abort(404); // or handle invalid verification link as needed
-    }
+        // return abort(404); // or handle invalid verification link as needed
+  
     // login
 
     public function formLogin()
