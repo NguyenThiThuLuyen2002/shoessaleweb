@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
@@ -11,29 +12,30 @@ use function Laravel\Prompts\alert;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller 
+class AuthController extends Controller
 {
     //
-    public function formRegister(){
+    public function formRegister()
+    {
         return view("auth.register");
     }
-    
-    public function register(RegisterRequest $request){
-        $user = User::create($request ->validated());
+
+    public function register(RegisterRequest $request)
+    {
+        $user = User::create($request->validated());
         $params = $request->validated();
         $params['password'] = bcrypt($params['password']);
 
-        if($user)
-        {
+        if ($user) {
             // Send email verification notification
             $user->sendEmailVerificationNotification();
 
-            return $this-> formVerifyEmail($user->id,sha1($user->getEmailForVerification()));
-          
+            return $this->formVerifyEmail($user->id, sha1($user->getEmailForVerification()));
+
             // return redirect()->route('form_verify_email', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())])->with('status', 'Registration successful. Please check your email for verification.');
         }
-        return redirect() -> back() -> with([
-            'fail'=> 'create account fail'
+        return redirect()->back()->with([
+            'fail' => 'create account fail'
         ]);
     }
 
@@ -56,44 +58,43 @@ class AuthController extends Controller
         Log::info("ID: $id, Hash: $hash"); // Log the values
 
         $user = User::find($id);
-        if($user){
+        if ($user) {
             $user->sendEmailVerificationNotification();
-            return $this-> formVerifyEmail($user->id, $hash);
+            return $this->formVerifyEmail($user->id, $hash);
         }
-        return redirect() -> back() -> with([
-            'fail'=> 'create account fail'
+        return redirect()->back()->with([
+            'fail' => 'create account fail'
         ]);
-        
-    }   
-        // if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-        //     $user->markEmailAsVerified();
-        //     event(new \Illuminate\Auth\Events\Verified($user));
-        //     return redirect('form-login'); // or wherever you want to redirect after verification
-        // } 
+    }
+    // if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+    //     $user->markEmailAsVerified();
+    //     event(new \Illuminate\Auth\Events\Verified($user));
+    //     return redirect('form-login'); // or wherever you want to redirect after verification
+    // } 
 
-        // return abort(404); // or handle invalid verification link as needed
-  
+    // return abort(404); // or handle invalid verification link as needed
 
-//--------------------------------------FORGOT PASS------------------
-public function showForgotPasswordForm()
-{
-    return view('auth.forgot-password');
-}
 
-public function sendResetLinkEmail(Request $request)
-{
-    $request->validate(['email' => 'required|email']);
+    //--------------------------------------FORGOT PASS------------------
+    public function showForgotPasswordForm()
+    {
+        return view('auth.forgot-password');
+    }
 
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
 
-    return $status === Password::RESET_LINK_SENT
-                ? back()->with(['status' => __($status)])
-                : back()->withErrors(['email' => __($status)]);
-}
-//reset form 
-public function showResetForm(Request $request, $token = null)
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
+    }
+    //reset form 
+    public function showResetForm(Request $request, $token = null)
     {
         return view('auth.password.reset')->with(
             ['token' => $token, 'email' => $request->email]
@@ -120,14 +121,20 @@ public function showResetForm(Request $request, $token = null)
 
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
-            $id_role = User::where('email', $user->email)->value('id_role');
-            session()->put('name', $user->name);
-            if ($id_role == 1) {
-                return redirect()->route('admin-home-page');
-            } elseif ($id_role == 2) {
-                return redirect('/');
+
+            if ($user->email_verified_at != NULL) {
+                $id_role = User::where('email', $user->email)->value('id_role');
+                session()->put('name', $user->name);
+                if ($id_role == 1) {
+                    return redirect()->route('admin-home-page');
+                } elseif ($id_role == 2) {
+                    return redirect('/');
+                } else {
+                }
             } else {
-                
+                // Người dùng chưa xác thực email
+                auth()->logout(); // Đăng xuất người dùng
+                return back()->with('fail', 'Vui lòng xác thực email trước khi đăng nhập.');
             }
         } else {
             return back()->with('fail', 'Sai tên đăng nhập hoặc mật khẩu');
@@ -146,11 +153,4 @@ public function showResetForm(Request $request, $token = null)
         session()->flush();
         return redirect()->route('login');
     }
-
-   
-
-
-
-
-   
 }
