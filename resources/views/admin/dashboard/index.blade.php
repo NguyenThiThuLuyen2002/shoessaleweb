@@ -2,6 +2,10 @@
 @section('title', 'THT - Dashboard')
 @section('content')
 
+@php
+    session_start();
+@endphp
+
 <!-- Main content -->
 <section class="content">
    <div class="container-fluid">

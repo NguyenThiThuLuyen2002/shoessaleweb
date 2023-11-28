@@ -2,12 +2,15 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Client\HomeController;
 
 
 /*
@@ -55,7 +58,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
     if ($user && hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
         $user->markEmailAsVerified();
         event(new \Illuminate\Auth\Events\Verified($user));
-        return redirect('form-login'); // or wherever you want to redirect after verification
+        return redirect('login'); // or wherever you want to redirect after verification
     }
 
     return abort(404); // or handle invalid verification link as needed
@@ -75,6 +78,7 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
 
 
 
+Route::get('/', [HomeController::class, 'index'])->name('client.home');
 // admin
 Route::prefix('admin')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
@@ -84,22 +88,43 @@ Route::prefix('admin')->group(function () {
         Route::post('list', [CategoryController::class, 'store']);
         Route::get('list', [CategoryController::class, 'index']);
     });
+
+    // Product
+    Route::prefix('products')->group(function () {
+        Route::get('create', [ProductController::class, 'create']);
+        Route::post('create', [ProductController::class, 'store']);
+        Route::post('detail/{id}', [ProductController::class, 'storeDetail']);
+        Route::get('list', [ProductController::class, 'index']);
+        Route::get('detail/{id}', [ProductController::class, 'show']);
+        Route::get('update/{id}', [ProductController::class, 'edit']);
+        Route::post('update/{id}', [ProductController::class, 'update']);
+        Route::delete('destroy/{id}', [ProductController::class, 'destroy']);
+        Route::delete('/delete-details/{id}', [ProductController::class, 'destroyDetail']);
+        Route::delete('/delete-all-details/{id}', [ProductController::class, 'destroyAllDetail']);
+        
+    });
 });
 
 // login
-
-Route::get('form-login', [AuthController::class, 'formLogin'])->name('form_login');
-Route::post('login', [AuthController::class, 'login'])->name('login')->middleware('guest');;
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+//logout
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 //login decentralization
-Route::get('/client-home-page',[AuthController::class,'dashboard_client'])->name('client_page');
-//logout
-Route::group(['middleware' => 'login'], function() {
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/client-home-page', [AuthController::class, 'dashboard_client'])->name('client_page');
+// // //logout
+// Route::group(['middleware' => 'login'], function () {
+//     Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+// });
+
+// //login with google
+// Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('login-with-google');
+// Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
+//login google
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
+    Route::get('auth/google/callback', 'handleGoogleCallback');
 });
-
-//login with google
-Route::get('auth/google',[LoginGoogleController::class,'redirectToGoogle'])->name('login-with-google');
-Route::get('auth/google/callback',[LoginGoogleController::class,'handleGoogleCallback']);
-
-

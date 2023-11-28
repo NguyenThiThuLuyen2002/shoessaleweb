@@ -114,7 +114,7 @@
                                         </div>
 
                                         <div class="row d-flex mt-4 justify-content-center align-items-center"> 
-                                            <p>Do you have an account ? <a class="text-primary" href="{{ route('form_login') }}" >Login</a></p>
+                                            <p>Do you have an account ? <a class="text-primary" href="{{ route('login') }}" >Login</a></p>
                                         </div>                         
                                     </form> 
                                 </div>

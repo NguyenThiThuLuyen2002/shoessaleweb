@@ -19,14 +19,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name',
-        'account_name',
         'email',
         'password',
         'id_role',
         'google_id',
-        'created_at',
-        'updated_at',
-            
     ];
     use HasApiTokens,HasFactory,Notifiable;
 
