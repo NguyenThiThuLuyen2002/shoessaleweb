@@ -74,36 +74,45 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
 //     return back()->with('message', 'Verification link sent!');
 // })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
+//Client
+Route::middleware(['ClientMiddleware'])->group(function () {
+
+    Route::get('/', [HomeController::class, 'index'])->name('client.home');
+});
 
 
 
-
-Route::get('/', [HomeController::class, 'index'])->name('client.home');
 // admin
-Route::prefix('admin')->group(function () {
-    Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
-
-    // Category
-    Route::prefix('categories')->group(function () {
-        Route::post('list', [CategoryController::class, 'store']);
-        Route::get('list', [CategoryController::class, 'index']);
-    });
-
-    // Product
-    Route::prefix('products')->group(function () {
-        Route::get('create', [ProductController::class, 'create']);
-        Route::post('create', [ProductController::class, 'store']);
-        Route::post('detail/{id}', [ProductController::class, 'storeDetail']);
-        Route::get('list', [ProductController::class, 'index']);
-        Route::get('detail/{id}', [ProductController::class, 'show']);
-        Route::get('update/{id}', [ProductController::class, 'edit']);
-        Route::post('update/{id}', [ProductController::class, 'update']);
-        Route::delete('destroy/{id}', [ProductController::class, 'destroy']);
-        Route::delete('/delete-details/{id}', [ProductController::class, 'destroyDetail']);
-        Route::delete('/delete-all-details/{id}', [ProductController::class, 'destroyAllDetail']);
-        
+Route::middleware(['AdminMiddleware'])->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
+    
+        // Category
+        Route::prefix('categories')->group(function () {
+            Route::post('list', [CategoryController::class, 'store']);
+            Route::get('list', [CategoryController::class, 'index']);
+        });
+    
+        // Product
+        Route::prefix('products')->group(function () {
+            Route::get('create', [ProductController::class, 'create']);
+            Route::post('create', [ProductController::class, 'store']);
+            Route::post('detail/{id}', [ProductController::class, 'storeDetail']);
+            Route::get('list', [ProductController::class, 'index']);
+            Route::get('detail/{id}', [ProductController::class, 'show']);
+            Route::get('update/{id}', [ProductController::class, 'edit']);
+            Route::post('update/{id}', [ProductController::class, 'update']);
+            Route::delete('destroy/{id}', [ProductController::class, 'destroy']);
+            Route::delete('/delete-details/{id}', [ProductController::class, 'destroyDetail']);
+            Route::delete('/delete-all-details/{id}', [ProductController::class, 'destroyAllDetail']);
+            
+        });
     });
 });
+
+
+
+
 
 // login
 Route::get('/login', function () {
