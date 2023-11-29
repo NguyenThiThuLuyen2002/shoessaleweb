@@ -14,8 +14,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+                <div class="card mt-5 shadow">
+                    <div class="card-header  bg-info"><h5>{{ __('Xác minh địa chỉ email của bạn') }}</h5></div>
 
                     <div class="card-body">
                         @if (session('message'))
@@ -24,12 +24,12 @@
                             </div>
                         @endif
 
-                        {{ __('Before proceeding, please check your email for a verification link.') }}
-                        {{ __('If you did not receive the email') }},
+                        {{ __('Trước khi tiếp tục, vui lòng kiểm tra email của bạn để lấy liên kết xác minh. ') }}
+                        {{ __('Nếu bạn không nhận được email') }},
 
                         <form method="POST" action="{{ isset($user) ? route('verifyEmail', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]) : '#' }}">
                             @csrf
-                            <button  type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
+                            <button  type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('click vào đây để yêu cầu gửi lại') }}</button>.
                         </form>
                     </div>
                 </div>
