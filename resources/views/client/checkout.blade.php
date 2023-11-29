@@ -56,7 +56,13 @@
                     <ul>
                         <li>Tổng <span>{{ number_format(request('total'), 0, '.', ',') }} VND</span></li>
                     </ul>
-                    <a href="#" class="primary-btn">Thanh toán VNPay</a>
+                    <form action="/vnpay" method="POST">
+                        @csrf
+                        <input name="total" value="{{  $totalAmount }}" type="hidden">
+                        <input name="quantity" value="{{ request('quantity') }}" type="hidden">
+                        <input name="id_product_detail" value="{{ request('detailId') }}" type="hidden">
+                        <button type="submit" name="redirect" class="primary-btn" style="width: 100%;">Thanh toán VNPay</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -27,7 +27,13 @@ Route::controller(HomeController::class)->group(function(){
     Route::get('product-detail/{id}', 'detail')->name('client.products.detail');
 });
 
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+//checkout
+Route::controller(CheckoutController::class)->group(function(){
+    Route::get('/checkout', 'index');
+    Route::post('/vnpay', 'vnpay_payment');
+    Route::get('/vnpay-callback', 'vnpay_callback')->name('vnpay.callback');
+
+});
 
 
 // admin

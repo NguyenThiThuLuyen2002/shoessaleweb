@@ -19,7 +19,6 @@ class HomeController extends Controller
 
     public function index()
     {
-        $username = session('username');
         $products = $this->product->with('category')->get();
 
         return view('client.home.index', compact('products'));

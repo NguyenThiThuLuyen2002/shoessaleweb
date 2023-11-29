@@ -47,7 +47,7 @@
                             <div class="product__details__option__size">
                                 <select id="productType" class="form-select">
                                     @foreach ($product->details as $detail)
-                                    <option value="{{ $detail->id }}" data-size="{{ $detail->size }}" data-color="{{ $detail->color }}">
+                                    <option value="{{ $detail->id }}" data-size="{{ $detail->size }}" data-color="{{ $detail->color }}" data-id-detail="{{ $detail->id }}">
                                         Size: {{ $detail->size }}, Color: {{ $detail->color }}
                                     </option>
                                     @endforeach
@@ -110,6 +110,7 @@
             var productPrice = parseFloat(productPriceElement.getAttribute('data-price')); // Lấy giá trị dưới dạng số
             var selectedSize = selectedTypeElement.options[selectedTypeElement.selectedIndex].getAttribute('data-size');
             var selectedColor = selectedTypeElement.options[selectedTypeElement.selectedIndex].getAttribute('data-color');
+            var selectedDetailId = selectedTypeElement.options[selectedTypeElement.selectedIndex].getAttribute('data-id-detail');
             var productQuantity = productQuantityElement.value;
 
             var totalAmount = parseFloat(productQuantity) * productPrice;
@@ -120,6 +121,7 @@
             // Chuyển hướng đến trang thanh toán với các tham số
             window.location.href = '/checkout?name=' + encodeURIComponent(productName) +
                 '&price=' + encodeURIComponent(productPrice) +
+                '&detailId=' + encodeURIComponent(selectedDetailId) +
                 '&size=' + encodeURIComponent(selectedSize) +
                 '&color=' + encodeURIComponent(selectedColor) +
                 '&quantity=' + encodeURIComponent(productQuantity) +
