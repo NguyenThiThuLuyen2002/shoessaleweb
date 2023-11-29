@@ -119,7 +119,7 @@
             console.log('Thành Tiền: ' + totalAmount);
 
             // Chuyển hướng đến trang thanh toán với các tham số
-            window.location.href = '/checkout?name=' + encodeURIComponent(productName) +
+            window.location.href = '/checkout?fromCart=true&name=' + encodeURIComponent(productName) +
                 '&price=' + encodeURIComponent(productPrice) +
                 '&detailId=' + encodeURIComponent(selectedDetailId) +
                 '&size=' + encodeURIComponent(selectedSize) +

@@ -29,13 +29,12 @@ Route::controller(HomeController::class)->group(function(){
 
 //checkout
 Route::controller(CheckoutController::class)->group(function(){
-    Route::get('/checkout', 'index');
+    Route::get('/checkout', 'index')->middleware('checkCheckOut');
     Route::post('/vnpay', 'vnpay_payment');
     Route::get('/vnpay-callback', 'vnpay_callback');
-    Route::get('/checkout_success', 'checkout_success')->name('checkout_success');;
+    Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success')->middleware('checkSuccessfulPayment');
 
 });
-
 
 // admin
 Route::prefix('admin')->group(function () {

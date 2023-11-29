@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\ProductDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\CommonMark\Node\Query\OrExpr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -146,11 +144,11 @@ class CheckoutController extends Controller
                 dd($e->getMessage());
                 // Handle error message or log the error if necessary
             }
-            return redirect()->route('checkout_success');
+            return redirect()->route('checkout-success', ['vnp_TxnRef' => $vnp_TxnRef]);
         }
     }
-    public function checkout_success()
+    public function checkout_success($vnp_TxnRef)
     {
-        return view('client.checkout.success');
+        return view('client.checkout.success', ['vnp_TxnRef' => $vnp_TxnRef]);
     }
 }
