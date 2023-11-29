@@ -119,6 +119,8 @@ body {
   border-bottom: 1px solid #a0a5a8;
   margin-top: 25px;
   line-height: 1;
+  text-align: right;
+  
 }
 
 .title {
