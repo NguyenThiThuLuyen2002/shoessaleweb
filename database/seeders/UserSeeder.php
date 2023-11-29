@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => Carbon::now(),
                 'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',
-                'avt' => 'https://antimatter.vn/wp-content/uploads/2022/10/hinh-anh-avatar-doi-cute-tinh-yeu-tra-sua-cho-nu.jpg',
+                'avt' => 'https://cdn.alongwalk.info/info/wp-content/uploads/2022/11/16190607/image-99-hinh-avatar-cute-ngau-ca-tinh-de-thuong-nhat-cho-nam-nu-9bf79a48fa0f9fe5702209a1a052c2d8.jpg',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'id_role' => 2,  
