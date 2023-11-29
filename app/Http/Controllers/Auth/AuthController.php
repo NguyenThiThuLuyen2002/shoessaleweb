@@ -30,8 +30,8 @@ class AuthController extends Controller
             // Send email verification notification
             $user->sendEmailVerificationNotification();
 
-            return $this->formVerifyEmail($user->id, sha1($user->getEmailForVerification()));
-
+            return $this-> formVerifyEmail($user->id,sha1($user->getEmailForVerification()))->with('message','please check you email');
+          
             // return redirect()->route('form_verify_email', ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())])->with('status', 'Registration successful. Please check your email for verification.');
         }
         return redirect()->back()->with([
@@ -43,7 +43,7 @@ class AuthController extends Controller
     public function formVerifyEmail($id, $hash)
     {
         // You may want to add some error checking here to handle cases where $id or $hash is not provided or is invalid.
-        alert('Please check you email !');
+       
         $user = User::find($id);
 
         if (!$user) {

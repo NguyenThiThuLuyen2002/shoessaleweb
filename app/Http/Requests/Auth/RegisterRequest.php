@@ -27,6 +27,7 @@ class RegisterRequest extends FormRequest
             'email'=> ['required','unique:users,email'],
             'password'=> ['required'],
             'id_role' => ['sometimes'], // "sometimes" means validate if it is present, or leave it alone otherwise.
+            'avt' => ['sometimes'],
         ];
     }
 
@@ -44,8 +45,8 @@ class RegisterRequest extends FormRequest
  
          $this->merge([
  
-             'id_role' => $this->account_name ?? 2, // Sets a default role of 2 if none is provided.
- 
+             'id_role' => $this->id_role ?? 2, // Sets a default role of 2 if none is provided.
+             'avt' => $this->avt ?? '/template/client/img/avt-default.png', 
          ]);
  
      }
@@ -67,11 +68,12 @@ class RegisterRequest extends FormRequest
      {
  
          $data = parent::all();
- 
          $data['id_role'] = $data['id_role'] ?? 2; // Provide default role if it's not set.
- 
+         $data['avt'] = $data['avt'] ?? '/template/client/img/avt-default.png';
+         
          return $data;
  
      }
+     
  
 }
