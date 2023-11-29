@@ -23,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'id_role',
         'google_id',
+        'avt',
     ];
     use HasApiTokens,HasFactory,Notifiable;
 

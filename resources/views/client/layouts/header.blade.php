@@ -32,6 +32,8 @@
                     <div class="nav-item dropdown">
                         <a href="#" style="height: 100%;color: #e53637;" class="nav-link dropdown-toggle"
                             onclick="toggleDropdown()" data-bs-toggle="dropdown">  
+                            <img src="{{ $user->avt }}" alt="" class="rounded-circle"
+                            style=" width: 35px;height: 35px;">
                             <!--return acc_name-->                        
                             {{ $user->name }} 
                         </a>
