@@ -13,5 +13,6 @@ class OrderDetail extends Model
         'id_order',
         'id_product_detail',
         'quantity',
+        'status'
     ];
 }

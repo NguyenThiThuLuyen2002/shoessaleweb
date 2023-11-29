@@ -12,5 +12,7 @@ class Order extends Model
     protected $fillable = [
         'id_user',
         'time_create',
+        'checkout',
+        'address'
     ];
 }

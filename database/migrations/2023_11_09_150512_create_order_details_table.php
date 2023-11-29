@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_order');
             $table->unsignedBigInteger('id_product_detail');
             $table->integer('quantity');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('id_order')

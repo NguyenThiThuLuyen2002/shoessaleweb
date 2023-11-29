@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->uuid('vnp_TxnRef');
             $table->unsignedBigInteger('id_user');
             $table->string('time_create');
+            $table->string('checkout');
+            $table->text('address');
             $table->timestamps();
 
             $table->foreign('id_user')

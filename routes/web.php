@@ -31,7 +31,8 @@ Route::controller(HomeController::class)->group(function(){
 Route::controller(CheckoutController::class)->group(function(){
     Route::get('/checkout', 'index');
     Route::post('/vnpay', 'vnpay_payment');
-    Route::get('/vnpay-callback', 'vnpay_callback')->name('vnpay.callback');
+    Route::get('/vnpay-callback', 'vnpay_callback');
+    Route::get('/checkout_success', 'checkout_success')->name('checkout_success');;
 
 });
 

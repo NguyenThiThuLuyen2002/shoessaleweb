@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use League\CommonMark\Node\Query\OrExpr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
@@ -24,7 +25,7 @@ class CheckoutController extends Controller
         $totalAmount = request('total');
 
 
-        return view('client.checkout', compact('productName', 'productPrice', 'productSize', 'productColor', 'productQuantity', 'totalAmount'));
+        return view('client.checkout.index', compact('productName', 'productPrice', 'productSize', 'productColor', 'productQuantity', 'totalAmount'));
     }
 
     public function vnpay_payment(Request $request)
@@ -32,6 +33,7 @@ class CheckoutController extends Controller
         $data = $request->all();
         $quantity = $data['quantity'];
         $idProductDetail =  $data['id_product_detail'];
+        $address =  $data['address'];
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -48,16 +50,11 @@ class CheckoutController extends Controller
             $vnp_Returnurl .= "&";
         }
         // Thêm tham số vào sau cùng của URL
-        $vnp_Returnurl .= "id_product_detail={$idProductDetail}&quantity={$quantity}";
+        $vnp_Returnurl .= "id_product_detail={$idProductDetail}&quantity={$quantity}&address={$address}";
 
         $vnp_TmnCode = "CGXZLS0Z";; //Mã website tại VNPAY 
         $vnp_HashSecret = "XNBCJFAKAZQSGTARRLGCHVZWCIOIGSHN"; //Chuỗi bí mật
-        $order = Order::create([
-            'id_user' => Auth::id(),
-            'time_create' => now(),
-        ]);
-        $vnp_TxnRef = $order->id;
-
+        $vnp_TxnRef = Str::uuid();
         $vnp_OrderInfo = 'Thanh toan hoa don';
         $vnp_OrderType = 'bill payment';
         $vnp_Amount = $data['total'] * 100;
@@ -122,15 +119,25 @@ class CheckoutController extends Controller
     {
         $quantity = $request->input('quantity');
         $idProductDetail = $request->input('id_product_detail');
-        $idOrder = $request->input('vnp_TxnRef');
+        $vnp_TxnRef = $request->input('vnp_TxnRef');
         $vnp_ResponseCode = $request->input('vnp_ResponseCode');
+        $address = $request->input('address');
         if ($vnp_ResponseCode == '00') {
             DB::beginTransaction();
             try {
+                $order = new Order();
+                $order->vnp_TxnRef = $vnp_TxnRef; // Sử dụng UUID
+                $order->id_user = Auth::id();
+                $order->time_create = now();
+                $order->checkout = 'Đã thanh toán';
+                $order->address = $address;
+                $order->save();
+
                 $orderDetail = new OrderDetail();
-                $orderDetail->id_order = $idOrder;
+                $orderDetail->id_order = $order->id;
                 $orderDetail->id_product_detail = $idProductDetail;
                 $orderDetail->quantity = $quantity;
+                $orderDetail->status = 'Chờ xác nhận';
                 $orderDetail->save();
 
                 DB::commit(); // Commit transaction if everything is successful
@@ -139,25 +146,11 @@ class CheckoutController extends Controller
                 dd($e->getMessage());
                 // Handle error message or log the error if necessary
             }
-
-            echo "Thanh toán thành công!";
-        } else {
-            // Xử lý trường hợp thanh toán không thành công
-            DB::beginTransaction();
-            try {
-                // Xóa đơn hàng và chi tiết đơn hàng tương ứng
-                Order::where('id', $idOrder)->delete();
-                OrderDetail::where('id_order', $idOrder)->delete();
-
-                DB::commit(); // Commit transaction if everything is successful
-
-                echo "Thanh toán không thành công! Đơn hàng đã bị hủy.";
-            } catch (\Exception $e) {
-                DB::rollback(); // Rollback in case of an error
-                dd($e->getMessage());
-                // Handle error message or log the error if necessary
-                echo "Lỗi khi hủy đơn hàng.";
-            }
+            return redirect()->route('checkout_success');
         }
+    }
+    public function checkout_success()
+    {
+        return view('client.checkout.success');
     }
 }

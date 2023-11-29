@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="table">
-                    <table>
+                    <table style="width: 100%;">
                         <thead>
                             <tr>
                                 <th>Tên</th>
@@ -49,6 +49,11 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="/vnpay" method="POST">
+                <div>
+                    <b>Nhập địa chỉ</b>
+                <textarea name="address" class="form-control"></textarea>
+                </div>
             </div>
             <div class="col-lg-4">
                 <div class="cart__total">
@@ -56,7 +61,7 @@
                     <ul>
                         <li>Tổng <span>{{ number_format(request('total'), 0, '.', ',') }} VND</span></li>
                     </ul>
-                    <form action="/vnpay" method="POST">
+                    
                         @csrf
                         <input name="total" value="{{  $totalAmount }}" type="hidden">
                         <input name="quantity" value="{{ request('quantity') }}" type="hidden">
