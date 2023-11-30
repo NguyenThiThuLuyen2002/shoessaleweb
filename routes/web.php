@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginGoogleController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\HomeController;
 
 
@@ -24,11 +25,25 @@ use App\Http\Controllers\Client\HomeController;
 |
 */
 //home
-Route::get('/', function () {
-    return view('client/home/index');
+Route::controller(HomeController::class)->group(function(){
+    Route::get('/', 'index')->name('client.home');
+    Route::get('product-detail/{id}', 'detail')->name('client.products.detail');
+});
+
+//checkout
+Route::controller(CheckoutController::class)->group(function(){
+    Route::get('/checkout', 'index');
+    Route::post('/vnpay', 'vnpay_payment');
+    Route::get('/vnpay-callback', 'vnpay_callback');
+    Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success');;
+
 });
 
 
+// admin
+Route::prefix('admin')->group(function () {
+    Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
+});
 
 Route::get('register', [AuthController::class, 'formRegister'])->  name('form_register');
 Route::post('register', [AuthController::class,'register'])->name('register');
@@ -137,3 +152,4 @@ Route::controller(GoogleController::class)->group(function(){
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
+
