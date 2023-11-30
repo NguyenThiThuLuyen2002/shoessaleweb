@@ -40,7 +40,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form method="POST" action="{{ route('register') }}">
+                        <form id="registrationForm" method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="form_group mb-2">
                                 <label for="name" >{{ __('Tên') }}<span class="text-danger">*</span></label>
@@ -146,6 +146,37 @@
 
             $('button[type="submit"]').prop('disabled', !isValid);
         }
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var passwordField = document.getElementById('password');
+        var confirmPasswordField = document.getElementById('password_confirmation');
+        var passwordMatchError = document.getElementById('password-match-error');
+        var registrationForm = document.getElementById('registrationForm');
+
+        function checkPasswordMatch() {
+            var password = passwordField.value;
+            var confirmPassword = confirmPasswordField.value;
+
+            if (password !== confirmPassword) {
+                passwordMatchError.textContent = 'Mật khẩu không khớp.';
+            } else {
+                passwordMatchError.textContent = '';
+            }
+        }
+
+        function checkBothFields() {
+            var password = passwordField.value;
+            var confirmPassword = confirmPasswordField.value;
+
+            if (password !== '' && confirmPassword !== '') {
+                checkPasswordMatch();
+            }
+        }
+
+        passwordField.addEventListener('input', checkBothFields);
+        confirmPasswordField.addEventListener('input', checkBothFields);
     });
 </script>
 
