@@ -15,4 +15,14 @@ class Order extends Model
         'checkout',
         'address'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_user');
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class, 'id_order');
+    }
 }

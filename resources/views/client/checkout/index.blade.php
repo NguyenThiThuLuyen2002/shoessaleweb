@@ -50,10 +50,14 @@
                     </table>
                 </div>
                 <form action="/vnpay" method="POST">
-                <div>
-                    <b>Nhập địa chỉ</b>
-                <textarea name="address" class="form-control"></textarea>
-                </div>
+                    <div>
+                        <b>Nhập địa chỉ<span class="text-danger"> (*)</span></b>
+                        <textarea name="address" class="form-control"></textarea>
+                        @error('address')
+                        <span class="text-danger"> {{ $message }}</span>
+                        @enderror
+
+                    </div>
             </div>
             <div class="col-lg-4">
                 <div class="cart__total">
@@ -61,12 +65,12 @@
                     <ul>
                         <li>Tổng <span>{{ number_format(request('total'), 0, '.', ',') }} VND</span></li>
                     </ul>
-                    
-                        @csrf
-                        <input name="total" value="{{  $totalAmount }}" type="hidden">
-                        <input name="quantity" value="{{ request('quantity') }}" type="hidden">
-                        <input name="id_product_detail" value="{{ request('detailId') }}" type="hidden">
-                        <button type="submit" name="redirect" class="primary-btn" style="width: 100%;">Thanh toán VNPay</button>
+
+                    @csrf
+                    <input name="total" value="{{  $totalAmount }}" type="hidden">
+                    <input name="quantity" value="{{ request('quantity') }}" type="hidden">
+                    <input name="id_product_detail" value="{{ request('detailId') }}" type="hidden">
+                    <button type="submit" name="redirect" class="primary-btn" style="width: 100%;">Thanh toán VNPay</button>
                     </form>
                 </div>
             </div>

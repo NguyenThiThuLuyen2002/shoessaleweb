@@ -25,28 +25,27 @@ use App\Http\Controllers\Client\HomeController;
 |
 */
 //home
-Route::controller(HomeController::class)->group(function(){
+Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('client.home');
     Route::get('product-detail/{id}', 'detail')->name('client.products.detail');
 });
 
-//checkout
-Route::controller(CheckoutController::class)->group(function(){
-    Route::get('/checkout', 'index');
-    Route::post('/vnpay', 'vnpay_payment');
-    Route::get('/vnpay-callback', 'vnpay_callback');
-    Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success');;
-
-});
-
+// //checkout
+// Route::controller(CheckoutController::class)->group(function () {
+//     Route::get('/checkout', 'index')->middleware('checkCheckOut');
+//     Route::post('/vnpay', 'vnpay_payment');
+//     Route::get('/vnpay-callback', 'vnpay_callback');
+//     Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success')->middleware('checkSuccessfulPayment');
+//     Route::get('/export-pdf/{vnp_TxnRef}', 'exportPdf');
+// });
 
 // admin
 Route::prefix('admin')->group(function () {
     Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
 });
 
-Route::get('register', [AuthController::class, 'formRegister'])->  name('form_register');
-Route::post('register', [AuthController::class,'register'])->name('register');
+Route::get('register', [AuthController::class, 'formRegister'])->name('form_register');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 
 Route::get('/forgot-password', [AuthController::class, 'showForgotPasswordForm'])->name('forgot.password.form');
 Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('forgot.password.submit');
@@ -93,6 +92,16 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
 Route::middleware(['ClientMiddleware'])->group(function () {
 
     Route::get('/', [HomeController::class, 'index'])->name('client.home');
+    //checkout
+    Route::middleware(['checkUserAuthentication'])->group(function () {
+        Route::controller(CheckoutController::class)->group(function () {
+            Route::get('/checkout', 'index')->middleware('checkCheckOut');
+            Route::post('/vnpay', 'vnpay_payment');
+            Route::get('/vnpay-callback', 'vnpay_callback');
+            Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success')->middleware('checkSuccessfulPayment');
+            Route::get('/export-pdf/{vnp_TxnRef}', 'exportPdf');
+        });
+    });
 });
 
 
@@ -101,13 +110,13 @@ Route::middleware(['ClientMiddleware'])->group(function () {
 Route::middleware(['AdminMiddleware'])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::get('', [DashboardController::class, 'index'])->name('admin-home-page'); //Ng set name for login --
-    
+
         // Category
         Route::prefix('categories')->group(function () {
             Route::post('list', [CategoryController::class, 'store']);
             Route::get('list', [CategoryController::class, 'index']);
         });
-    
+
         // Product
         Route::prefix('products')->group(function () {
             Route::get('create', [ProductController::class, 'create']);
@@ -120,7 +129,6 @@ Route::middleware(['AdminMiddleware'])->group(function () {
             Route::delete('destroy/{id}', [ProductController::class, 'destroy']);
             Route::delete('/delete-details/{id}', [ProductController::class, 'destroyDetail']);
             Route::delete('/delete-all-details/{id}', [ProductController::class, 'destroyAllDetail']);
-            
         });
     });
 });
@@ -148,8 +156,7 @@ Route::get('/client-home-page', [AuthController::class, 'dashboard_client'])->na
 // Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('login-with-google');
 // Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
 //login google
-Route::controller(GoogleController::class)->group(function(){
+Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
-

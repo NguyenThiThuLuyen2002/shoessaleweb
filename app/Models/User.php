@@ -49,6 +49,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getEmailForVerification()
     {
-        return $this->email; // Replace with the actual column that contains the email address
+        return $this->email; }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'id_user');
     }
 }

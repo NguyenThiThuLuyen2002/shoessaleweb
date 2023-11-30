@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\OrderDetail;
-use App\Models\ProductDetail;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use League\CommonMark\Node\Query\OrExpr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Mail\OrderConfirmation;
@@ -31,12 +31,13 @@ class CheckoutController extends Controller
         return view('client.checkout.index', compact('productName', 'productPrice', 'productSize', 'productColor', 'productQuantity', 'totalAmount'));
     }
 
-    public function vnpay_payment(Request $request)
+    public function vnpay_payment(CheckoutRequest $request)
     {
         $data = $request->all();
         $quantity = $data['quantity'];
         $idProductDetail =  $data['id_product_detail'];
-        $address =  $data['address'];
+        $address = $request->input('address');
+
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -140,7 +141,7 @@ class CheckoutController extends Controller
                 $orderDetail->id_order = $order->id;
                 $orderDetail->id_product_detail = $idProductDetail;
                 $orderDetail->quantity = $quantity;
-                $orderDetail->status = 'Chờ xác nhận';
+                $orderDetail->status = 'Đã xác nhận';
                 $orderDetail->save();
 
                 DB::commit(); // Commit transaction if everything is successful
@@ -153,32 +154,50 @@ class CheckoutController extends Controller
         }
     }
     public function checkout_success($vnp_TxnRef)
-{
-    // Retrieve the order ID from the session (assuming you stored it there during checkout)
-    
-    // dd($vnp_TxnRef);
-    // Make sure the order ID exists
-    if (!$vnp_TxnRef) {
-        // Handle the case where the order ID is not available
-        return redirect()->route('checkout_failed');
+
+    {
+        $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
+        // dd($order);
+
+        // Make sure the order and customer email exist
+        if ($order && $order->id_user) {
+            $id_u = $order->id_user;
+            $user = User::where('id', $id_u)->first();
+            $customerEmail = $user ? $user->email : '';
+
+            // Send the order confirmation email
+            Mail::to($customerEmail)->send(new OrderConfirmation($order));
+        }
+
+        $user = Auth::user();
+        $totalQuantity = 0;
+        $totalAmount = 0;
+
+        return view('client.checkout.success', [
+            'order' => $order,
+            'user' => $user,
+            'totalQuantity' => $totalQuantity,
+            'totalAmount' => $totalAmount,
+        ]);
     }
+    public function exportPDF($vnp_TxnRef)
+    {
+        // Tìm đơn hàng theo mã vnp_TxnRef
+        $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
 
-    // Retrieve the order details from your database
-    // $order = Order::find($vnp_TxnRef);
-    $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
-    // dd($order);
+        if (!$order) {
+            // Xử lý khi không tìm thấy đơn hàng
+            return redirect()->route('error');
+        }
 
-    // Make sure the order and customer email exist
-    if ($order && $order->id_user) {
-        $id_u = $order->id_user;
-        $user = User::where('id', $id_u)->first();
-        $customerEmail= $user ? $user->email :'';
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::user();
+        $totalQuantity = 0;
+        $totalAmount = 0;
+        $data = compact('order', 'user', 'totalQuantity', 'totalAmount');
+        $pdf = PDF::loadView('client.checkout.invoice', $data);
+        $filename = 'invoice-' . $vnp_TxnRef . '.pdf';
 
-        // Send the order confirmation email
-        Mail::to($customerEmail)->send(new OrderConfirmation($order));
+        return $pdf->download($filename);
     }
-
-    return view('client.checkout.success');
-}
-
 }
