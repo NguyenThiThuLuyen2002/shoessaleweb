@@ -9,7 +9,7 @@
     <h1>Đặt hàng thành công!</h1>
     <p>Mã đơn hàng của bạn là: {{ $order->id }}</p>
     <p>Thời gian: {{ $order->created_at }}</p>
-    <h3>Cảm ơn bạn đã mua hàng tại THT shop, hehe! </h3>
+    <h3>Cảm ơn bạn đã mua hàng tại THT SHOES STORE! </h3>
     <!-- Add more order details as needed -->
 </body>
 </html>

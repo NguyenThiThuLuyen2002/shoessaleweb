@@ -137,7 +137,7 @@ class ProductController extends Controller
             return redirect()->back();
         }
 
-        return redirect()->back();
+        return redirect()->intended('/admin/products/list');
     }
 
     public function storeDetail(CreateDetailProductRequest $request, $id)
@@ -300,7 +300,7 @@ class ProductController extends Controller
             return redirect()->back()->withInput();
         }
 
-        return redirect()->back();
+        return redirect()->intended('/admin/products/list');
     }
     /**
      * Remove the specified resource from storage.

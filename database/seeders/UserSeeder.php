@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name' => 'khanhdo',
-                'email' => 'hongkhanh@gmail.com',
+                'email' => 'admin@gmail.com',
                 'email_verified_at' => Carbon::now(),
                 'password' =>  bcrypt('ABC12345'),
                 'remember_token' => '',

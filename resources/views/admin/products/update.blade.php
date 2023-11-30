@@ -5,7 +5,7 @@
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="">
         <div class="form-group">
-            <label>Danh mục</label>
+            <label>Danh mục <span class="text-danger"> (*)</span></label>
             <select class="form-control" name="id_category">
                 @foreach($categories as $category)
                 <option value="{{ $category->id }}" {{ $product->id_category == $category->id ? 'selected' : '' }}>{{ $category->name_category }}</option>
@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-group">
-            <label>Tên sản phẩm</label>
+            <label>Tên sản phẩm <span class="text-danger"> (*)</span></label>
             <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm" value="{{ $product->name_product }}">
             @error('name_product')
             <span class="text-danger"> {{ $message }}</span>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            <label>Giá </label>
+            <label>Giá <span class="text-danger"> (*)</span></label>
             <input type="number" name="price" class="form-control" placeholder="Nhập giá" value="{{ $product->price }}">
             @error('price')
             <span class="text-danger"> {{ $message }}</span>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-group">
-            <label>Mô tả </label>
+            <label>Mô tả <span class="text-danger"> (*)</span></label>
             <textarea name="description" class="form-control">{{ $product->description }}</textarea>
             @error('description')
             <span class="text-danger"> {{ $message }}</span>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-            <label>Hình ảnh</label>
+            <label>Hình ảnh <span class="text-danger"> (*)</span></label>
             <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control">
             <img src="/upload/products/{{ $product->avt }}" id="show-image" alt="" width="150px">
             @error('image_upload')
@@ -53,7 +53,7 @@
                     <input type="hidden" name="details[{{ $index }}][id]" value="{{ $detail->id }}">
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Size</label>
+                            <label>Size <span class="text-danger"> (*)</span></label>
                             <input type="number" class="form-control" name="details[{{ $index }}][size]" placeholder="Nhập size" value="{{ $detail->size }}">
                             @error('details.*.size')
                             <span class="text-danger"> {{ $message }}</span>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Màu sắc</label>
+                            <label>Màu sắc <span class="text-danger"> (*)</span></label>
                             <input type="text" class="form-control" name="details[{{ $index }}][color]" placeholder="Nhập màu sắc" value="{{ $detail->color }}">
                             @error('details.*.color')
                             <span class="text-danger"> {{ $message }}</span>
@@ -71,7 +71,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Số lượng</label>
+                            <label>Số lượng <span class="text-danger"> (*)</span></label>
                             <input type="number" class="form-control" name="details[{{ $index }}][inventory_number]" placeholder="Nhập số lượng" value="{{ $detail->inventory_number }}">
                             @error('details.*.inventory_number')
                             <span class="text-danger"> {{ $message }}</span>

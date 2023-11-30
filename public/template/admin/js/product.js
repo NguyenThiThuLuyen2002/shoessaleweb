@@ -177,19 +177,19 @@ $(document).ready(function() {
         newDetailDiv.html(`
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Size</label>
+                    <label>Size <span class="text-danger"> (*)</span></label>
                     <input type="number" class="form-control" name="details[${currentDetailIndex}][size]" placeholder="Nhập size">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Màu sắc</label>
+                    <label>Màu sắc <span class="text-danger"> (*)</span></label>
                     <input type="text" class="form-control" name="details[${currentDetailIndex}][color]" placeholder="Nhập màu sắc">
                 </div>
             </div>
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Số lượng</label>
+                    <label>Số lượng <span class="text-danger"> (*)</span></label>
                     <input type="number" class="form-control" name="details[${currentDetailIndex}][inventory_number]" placeholder="Nhập số lượng">
                 </div>
             </div>
@@ -201,7 +201,7 @@ $(document).ready(function() {
             </div>
             <div class="col-sm-1">
                 <div class="form-group">
-                    <button type="button" class="btn btn-danger js-remove-row mt-4">Xóa</button>
+                    <button type="button" class="btn btn-danger js-remove-row mt-4">x</button>
                 </div>
             </div>
         `);

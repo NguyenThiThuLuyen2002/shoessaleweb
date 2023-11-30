@@ -6,6 +6,9 @@
         <label for="category">Tên danh mục</label>
         <div class="d-flex">
             <input type="text" name="name_category" class="form-control" placeholder="Nhập tên danh mục">
+            @error('name_category')
+            <span class="text-danger"> {{ $message }}</span>
+            @enderror
             <button type="submit" class="btn btn-primary">Thêm</button>
         </div>
     </div>

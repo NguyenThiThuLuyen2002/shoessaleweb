@@ -5,7 +5,7 @@
 <form action="" method="POST" enctype="multipart/form-data">
     <div class="">
         <div class="form-group">
-            <label>Danh mục</label>
+            <label>Danh mục <span class="text-danger"> (*)</span></label>
             <select class="form-control" name="id_category">
                 @foreach($categories as $categorie)
                 <option value="{{ $categorie->id }}">{{ $categorie->name_category }}</option>
@@ -14,7 +14,7 @@
         </div>
 
         <div class="form-group">
-            <label>Tên sản phẩm</label>
+            <label>Tên sản phẩm <span class="text-danger"> (*)</span></label>
             <input type="text" name="name_product" class="form-control" placeholder="Nhập tên sản phẩm" value="{{ old('name_product') }}">
             @error('name_product')
             <span class="text-danger"> {{ $message }}</span>
@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            <label>Giá </label>
+            <label>Giá <span class="text-danger"> (*)</span></label>
             <input type="number" name="price" class="form-control" placeholder="Nhập giá" value="{{ old('price') }}">
             @error('price')
             <span class="text-danger"> {{ $message }}</span>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="form-group">
-            <label>Mô Tả </label>
+            <label>Mô Tả <span class="text-danger"> (*)</span></label>
             <textarea name="description" class="form-control">{{ old('description') }}</textarea>
             @error('description')
             <span class="text-danger"> {{ $message }}</span>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-            <label>Hình ảnh</label>
+            <label>Hình ảnh <span class="text-danger"> (*)</span></label>
             <input type="file" accept="image/*" name="image_upload" id="image-input" class="form-control">
             <img src="" id="show-image" alt="" width="150px">
             @error('image_upload')
@@ -51,7 +51,7 @@
                 <div class="row detail-row">
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Size</label>
+                            <label>Size <span class="text-danger"> (*)</span></label>
                             <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size">
                             @error('details.*.size')
                             <span class="text-danger"> {{ $message }}</span>
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Màu sắc</label>
+                            <label>Màu sắc <span class="text-danger"> (*)</span></label>
                             <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc">
                             @error('details.*.color')
                             <span class="text-danger"> {{ $message }}</span>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label>Số lượng</label>
+                            <label>Số lượng <span class="text-danger"> (*)</span></label>
                             <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng">
                             @error('details.*.inventory_number')
                             <span class="text-danger"> {{ $message }}</span>
@@ -89,7 +89,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    <a href="javascript:;" class="btn btn-success" id="add-new-detail">Thêm</a>
+                    <a href="javascript:;" class="btn btn-success" id="add-new-detail">+</a>
                 </div>
             </div>
         </div>

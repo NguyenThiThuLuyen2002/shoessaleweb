@@ -10,7 +10,7 @@
             <div class="row detail-row">
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label>Size</label>
+                        <label>Size <span class="text-danger"> (*)</span></label>
                         <input type="number" class="form-control" name="details[0][size]" placeholder="Nhập size">
                         @error('details.*.size')
                         <span class="text-danger"> {{ $message }}</span>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label>Màu sắc</label>
+                        <label>Màu sắc <span class="text-danger"> (*)</span></label>
                         <input type="text" class="form-control" name="details[0][color]" placeholder="Nhập màu sắc">
                         @error('details.*.color')
                         <span class="text-danger"> {{ $message }}</span>
@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label>Số lượng</label>
+                        <label>Số lượng <span class="text-danger"> (*)</span></label>
                         <input type="number" class="form-control" name="details[0][inventory_number]" placeholder="Nhập số lượng">
                         @error('details.*.inventory_number')
                         <span class="text-danger"> {{ $message }}</span>
@@ -48,7 +48,7 @@
         </div>
         <div class="row">
             <div class="col-sm-3">
-                <a href="javascript:;" class="btn btn-success" id="add-new-detail">Thêm</a>
+                <a href="javascript:;" class="btn btn-success" id="add-new-detail">+</a>
             </div>
         </div>
     </div>
