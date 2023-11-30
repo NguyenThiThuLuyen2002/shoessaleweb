@@ -15,4 +15,15 @@ class OrderDetail extends Model
         'quantity',
         'status'
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'id_order');
+    }
+
+    // Mối quan hệ many-to-one với ProductDetail
+    public function productDetail()
+    {
+        return $this->belongsTo(ProductDetail::class, 'id_product_detail');
+    }
 }

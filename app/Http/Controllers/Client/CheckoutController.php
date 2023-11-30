@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckCheckOut;
+use App\Http\Requests\CheckoutRequest;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,12 +29,13 @@ class CheckoutController extends Controller
         return view('client.checkout.index', compact('productName', 'productPrice', 'productSize', 'productColor', 'productQuantity', 'totalAmount'));
     }
 
-    public function vnpay_payment(Request $request)
+    public function vnpay_payment(CheckoutRequest $request)
     {
         $data = $request->all();
         $quantity = $data['quantity'];
         $idProductDetail =  $data['id_product_detail'];
-        $address =  $data['address'];
+        $address = $request->input('address');
+
 
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
@@ -149,6 +153,24 @@ class CheckoutController extends Controller
     }
     public function checkout_success($vnp_TxnRef)
     {
-        return view('client.checkout.success', ['vnp_TxnRef' => $vnp_TxnRef]);
+        // Tìm đơn hàng theo mã vnp_TxnRef
+        $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
+    
+        if (!$order) {
+            // Xử lý khi không tìm thấy đơn hàng
+            return redirect()->route('error');
+        }
+    
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::user();
+        $totalQuantity = 0;
+        $totalAmount = 0;
+    
+        return view('client.checkout.success', [
+            'order' => $order,
+            'user' => $user,
+            'totalQuantity' => $totalQuantity,
+            'totalAmount' => $totalAmount,
+        ]);
     }
 }
