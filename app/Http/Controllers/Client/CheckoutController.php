@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\CheckCheckOut;
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Order;
 use App\Models\OrderDetail;
-use App\Models\User;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -155,22 +154,43 @@ class CheckoutController extends Controller
     {
         // Tìm đơn hàng theo mã vnp_TxnRef
         $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
-    
+
         if (!$order) {
             // Xử lý khi không tìm thấy đơn hàng
             return redirect()->route('error');
         }
-    
+
         // Lấy thông tin người dùng hiện tại
         $user = Auth::user();
         $totalQuantity = 0;
         $totalAmount = 0;
-    
+
         return view('client.checkout.success', [
             'order' => $order,
             'user' => $user,
             'totalQuantity' => $totalQuantity,
             'totalAmount' => $totalAmount,
         ]);
+    }
+
+    public function exportPDF($vnp_TxnRef)
+    {
+        // Tìm đơn hàng theo mã vnp_TxnRef
+        $order = Order::where('vnp_TxnRef', $vnp_TxnRef)->first();
+
+        if (!$order) {
+            // Xử lý khi không tìm thấy đơn hàng
+            return redirect()->route('error');
+        }
+
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::user();
+        $totalQuantity = 0;
+        $totalAmount = 0;
+        $data = compact('order', 'user', 'totalQuantity', 'totalAmount');
+        $pdf = PDF::loadView('client.checkout.invoice', $data);
+        $filename = 'invoice-' . $vnp_TxnRef . '.pdf';
+
+        return $pdf->download($filename);
     }
 }

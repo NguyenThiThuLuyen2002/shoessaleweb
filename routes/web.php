@@ -22,18 +22,18 @@ use App\Http\Controllers\Client\HomeController;
 |
 */
 //home
-Route::controller(HomeController::class)->group(function(){
+Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('client.home');
     Route::get('product-detail/{id}', 'detail')->name('client.products.detail');
 });
 
 //checkout
-Route::controller(CheckoutController::class)->group(function(){
+Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'index')->middleware('checkCheckOut');
     Route::post('/vnpay', 'vnpay_payment');
     Route::get('/vnpay-callback', 'vnpay_callback');
     Route::get('/checkout-success/{vnp_TxnRef}', 'checkout_success')->name('checkout-success')->middleware('checkSuccessfulPayment');
-
+    Route::get('/export-pdf/{vnp_TxnRef}', 'exportPdf');
 });
 
 // admin
@@ -58,7 +58,6 @@ Route::prefix('admin')->group(function () {
         Route::delete('destroy/{id}', [ProductController::class, 'destroy']);
         Route::delete('/delete-details/{id}', [ProductController::class, 'destroyDetail']);
         Route::delete('/delete-all-details/{id}', [ProductController::class, 'destroyAllDetail']);
-        
     });
 });
 
@@ -81,8 +80,7 @@ Route::get('/client-home-page', [AuthController::class, 'dashboard_client'])->na
 // Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('login-with-google');
 // Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback']);
 //login google
-Route::controller(GoogleController::class)->group(function(){
+Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
     Route::get('auth/google/callback', 'handleGoogleCallback');
 });
-
